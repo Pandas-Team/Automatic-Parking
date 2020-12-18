@@ -204,7 +204,7 @@ class PathPlanning():
                                   np.array([[101,i] for i in range(102)]),
                                   np.array([[i,0] for i in range(102)]),
                                   np.array([[i,101] for i in range(102)]),
-                                  obstacles])
+                                  obstacles+np.array([1,1])])
 
         self.ox = [int(item) for item in self.obs[:,0]]
         self.oy = [int(item) for item in self.obs[:,1]]
@@ -215,8 +215,8 @@ class PathPlanning():
     def plan_path(self,sx, sy, gx, gy):
         
         rx, ry = self.a_star.planning(sx+1, sy+1, gx+1, gy+1)
-        rx = np.array(rx)
-        ry = np.array(ry)
+        rx = np.array(rx)-1
+        ry = np.array(ry)-1
         path = np.vstack([rx,ry]).T
         return path
 
