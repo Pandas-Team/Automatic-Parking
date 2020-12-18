@@ -15,9 +15,7 @@ ang = 45
 
 #path planning setup
 
-obs = obs - np.array([3,3])
-path_obs = obs[(obs[:,0]>=0) & (obs[:,1]>=0)]
-path_planner = PathPlanning(path_obs)
+path_planner = PathPlanning(obs)
 path = path_planner.plan_path(1,1,90,20)
 
 env.draw_path(path)

@@ -200,11 +200,17 @@ class AStarPlanner:
 
 class PathPlanning():
     def __init__(self,obstacles):
-        self.obs = np.concatenate([np.array([[0,i] for i in range(102)]),
-                                  np.array([[101,i] for i in range(102)]),
-                                  np.array([[i,0] for i in range(102)]),
-                                  np.array([[i,101] for i in range(102)]),
-                                  obstacles+np.array([1,1])])
+        self.margin = 2
+
+        #sacale obstacles from env margin to pathplanning margin
+        obstacles = obstacles - (np.array([3,3])-np.array([self.margin,self.margin]))
+        obstacles = obstacles[(obstacles[:,0]>=0) & (obstacles[:,1]>=0)]
+
+        self.obs = np.concatenate([np.array([[0,i] for i in range(100+self.margin)]),
+                                  np.array([[100+2*self.margin,i] for i in range(100+2*self.margin)]),
+                                  np.array([[i,0] for i in range(100+self.margin)]),
+                                  np.array([[i,100+2*self.margin] for i in range(100+2*self.margin)]),
+                                  obstacles])
 
         self.ox = [int(item) for item in self.obs[:,0]]
         self.oy = [int(item) for item in self.obs[:,1]]
@@ -214,9 +220,9 @@ class PathPlanning():
 
     def plan_path(self,sx, sy, gx, gy):
         
-        rx, ry = self.a_star.planning(sx+1, sy+1, gx+1, gy+1)
-        rx = np.array(rx)-1
-        ry = np.array(ry)-1
+        rx, ry = self.a_star.planning(sx+self.margin, sy+self.margin, gx+self.margin, gy+self.margin)
+        rx = np.array(rx)-self.margin
+        ry = np.array(ry)-self.margin
         path = np.vstack([rx,ry]).T
         return path
 
