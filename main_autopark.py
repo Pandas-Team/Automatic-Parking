@@ -16,7 +16,7 @@ ang = 45
 #path planning setup
 
 path_planner = PathPlanning(obs)
-path = path_planner.plan_path(1,1,90,20)
+path = path_planner.plan_path(0,0,90,20)
 
 env.draw_path(path)
 env.interpolate_path(path)
