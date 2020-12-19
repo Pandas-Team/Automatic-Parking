@@ -2,7 +2,7 @@
 This repository contains an auto park system including path planning, path tracking, and double parking in a designed envroinment.
 
 ## Envroinment
-[developed environment](extra/env.png)
+![developed environment](extra/env.png)
 ## Path planning
 
 #### A* algorithm
