@@ -2,16 +2,15 @@
 
 This repository contains an auto park system including path planning, path tracking, and parking process in a designed envroinment.
 
-### Envroinment
+## Envroinment
 
-### Path planning
+## Path planning
 
-##### A* algorithm
-
+#### A* algorithm
 Agent will find a path from start to its goal. this implementation of A* from [PythonRobotics](https://pythonrobotics.readthedocs.io/en/latest/modules/path_planning.html), considers paraameters like obstacles and robot radius.
 
-##### interpolating path with spline
+#### interpolating path with spline
 
-### Path tracking
+## Path tracking
 
-### Double parking
+## Double parking
