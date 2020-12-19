@@ -11,8 +11,10 @@ A sample of environment is displayed bellow.
 ## Path planning
 
 #### A* algorithm
-Agent will find a path from start to its goal using A*. This implementation of A* from [PythonRobotics](https://pythonrobotics.readthedocs.io/en/latest/modules/path_planning.html), considers parameters like obstacles and robot radius.
+Agent will find a path from start to its goal using A*.
+This implementation of A* from [PythonRobotics](https://pythonrobotics.readthedocs.io/en/latest/modules/path_planning.html), considers parameters like obstacles and robot radius.
 
+![A star](extra/a_star.png)
 #### interpolating path with spline
 
 ## Path tracking
