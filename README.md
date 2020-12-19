@@ -3,7 +3,7 @@ This repository contains an auto park system including path planning, path track
 
 ## Envroinment
 Our first step to develop an auto park system was to design and develop an environment capable of giving visual render using ```OpenCV``` library.
-Environment is implemented in ```environment.py``` as a class and recieves obstacles at the beginning.
+Environment is implemented in ```environment.py``` as a class and recieves obstacles at the beginning ```env = Environment(obs)```.
 Agent can be placed using ```env.render(x,y,angle)```.
 A sample of environment is displayed bellow.
 
