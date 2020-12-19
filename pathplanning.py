@@ -203,7 +203,7 @@ class PathPlanning():
         self.margin = 2
 
         #sacale obstacles from env margin to pathplanning margin
-        obstacles = obstacles - (np.array([3,3])-np.array([self.margin,self.margin]))
+        obstacles = obstacles + np.array([self.margin,self.margin])
         obstacles = obstacles[(obstacles[:,0]>=0) & (obstacles[:,1]>=0)]
 
         self.obs = np.concatenate([np.array([[0,i] for i in range(100+self.margin)]),

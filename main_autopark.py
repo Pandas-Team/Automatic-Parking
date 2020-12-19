@@ -7,7 +7,10 @@ import matplotlib.pyplot as plt
 from environment import Environment
 from pathplanning import PathPlanning
 
-obs = np.array([[40+3,i] for i in range(1,80+3)]) 
+# environment margin  : 3
+# pathplanning margin : 2
+
+obs = np.array([[30,i] for i in range(-3,80)] + [[70,i] for i in range(20,103)]) 
 
 env = Environment(obs)
 car_center = np.array([0,0])
@@ -16,7 +19,7 @@ ang = 45
 #path planning setup
 
 path_planner = PathPlanning(obs)
-path = path_planner.plan_path(0,0,90,20)
+path = path_planner.plan_path(0,0,90,90)
 
 env.draw_path(path)
 env.interpolate_path(path)
