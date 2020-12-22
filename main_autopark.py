@@ -26,6 +26,8 @@ env.interpolate_path(path)
 while True:
         
         res = env.render(car_center[0],car_center[1],ang)
+        # cv2.imwrite('res.png', res*255)
+        # break
         cv2.imshow('environment', res)
         key = cv2.waitKey(1)
         if key == ord('a'):
