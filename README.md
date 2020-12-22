@@ -16,7 +16,7 @@ This implementation of A* from [PythonRobotics](https://pythonrobotics.readthedo
 
 #### interpolating path with spline
 After finding a path in a descrete 100\*100 space, the path is smoothed and scaled to 1000\*1000 space of environment using b-spline.
-The result is a set of points, to guide our agent!
+The result is a set of points to guide our agent!
 
 ![path planning](extra/path_planning.png)
 
