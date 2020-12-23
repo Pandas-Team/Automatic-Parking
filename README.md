@@ -14,7 +14,7 @@ A sample of environment is displayed bellow.
 Agent will find a path from start to its goal using A*.
 This implementation of A* from [PythonRobotics](https://pythonrobotics.readthedocs.io/en/latest/modules/path_planning.html), considers parameters like obstacles and robot radius.
 
-#### interpolating path with spline
+#### interpolating path with b-spline
 After finding a path in a descrete 100\*100 space, the path is smoothed and scaled to 1000\*1000 space of environment using b-spline.
 The result is a set of points to guide our agent!
 
