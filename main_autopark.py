@@ -10,7 +10,8 @@ from pathplanning import PathPlanning
 # environment margin  : 3
 # pathplanning margin : 2
 
-obs = np.array([[30,i] for i in range(-3,80)] + [[70,i] for i in range(20,103)]) 
+# obs = np.array([[30,i] for i in range(-3,80)] + [[70,i] for i in range(20,103)]) 
+obs = np.array([[30,i] for i in range(30,70)] + [[70,i] for i in range(30,70)] + [[i,30] for i in range(30,70)] + [[i,70] for i in range(30,70)]) 
 
 env = Environment(obs)
 car_center = np.array([0,0])
