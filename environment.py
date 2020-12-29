@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import scipy.interpolate as scipy_interpolate
 
 class Environment():
     def __init__(self,obstacles):
@@ -34,26 +33,9 @@ class Environment():
     
     def draw_path(self, path):
         path = np.array(path)*10
+        path = path.astype(int)
         for p in path:
-            self.background[p[1]+10*self.margin:p[1]+10*self.margin+10,p[0]+10*self.margin:p[0]+10*self.margin+10]=np.array([0,255,0])/255
-
-    def interpolate_b_spline_path(self, x, y, n_path_points, degree=3):
-        ipl_t = np.linspace(0.0, len(x) - 1, len(x))
-        spl_i_x = scipy_interpolate.make_interp_spline(ipl_t, x, k=degree)
-        spl_i_y = scipy_interpolate.make_interp_spline(ipl_t, y, k=degree)
-        travel = np.linspace(0.0, len(x) - 1, n_path_points)
-        return spl_i_x(travel), spl_i_y(travel)
-
-    def interpolate_path(self, path):
-        choices = np.arange(0,len(path),int(len(path)/32))
-        way_point_x = path[choices,0]*10
-        way_point_y = path[choices,1]*10
-        n_course_point = 1000
-        rix, riy = self.interpolate_b_spline_path(way_point_x, way_point_y, n_course_point)
-        new_path = (np.vstack([rix,riy]).T).astype(int)
-        for p in new_path:
             self.background[p[1]+10*self.margin:p[1]+10*self.margin+2,p[0]+10*self.margin:p[0]+10*self.margin+2]=np.array([255,0,0])/255
-
 
     def rotate_car(self, pts, degrees=0):
         angle = np.deg2rad(degrees)

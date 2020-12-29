@@ -21,9 +21,12 @@ ang = 45
 
 path_planner = PathPlanning(obs)
 path = path_planner.plan_path(0,0,90,90)
+interpolated_path = path_planner.interpolate_path(path)
 
-env.draw_path(path)
-env.interpolate_path(path)
+print('path = \n',interpolated_path)
+
+env.draw_path(interpolated_path)
+
 while True:
         
         res = env.render(car_center[0],car_center[1],ang)
@@ -45,7 +48,7 @@ while True:
             ang -= 1
         if key == ord('q'):
             break
-        print(car_center)
+        # print(car_center)
 
 cv2.destroyAllWindows()
 
