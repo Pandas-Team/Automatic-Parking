@@ -244,7 +244,7 @@ class PathPlanning():
         rix, riy = self.interpolate_b_spline_path(way_point_x, way_point_y, n_course_point)
         new_path = (np.vstack([rix,riy]).T)
         # new_path[new_path<0] = 0
-        return new_path
+        return new_path[::-1][10:]
 
 
 

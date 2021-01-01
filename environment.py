@@ -37,16 +37,18 @@ class Environment():
         for p in path:
             self.background[p[1]+10*self.margin:p[1]+10*self.margin+2,p[0]+10*self.margin:p[0]+10*self.margin+2]=np.array([255,0,0])/255
 
-    def rotate_car(self, pts, degrees=0):
-        angle = np.deg2rad(degrees)
+    def rotate_car(self, pts, angle=0):
         R = np.array([[np.cos(angle), -np.sin(angle)],
                     [np.sin(angle),  np.cos(angle)]])
         
         return ((R @ pts.T).T).astype(int)
 
     def render(self, x, y, angle):
+        # x,y in 100 coordinates
+        x = int(10*x)
+        y = int(10*y)
         # x,y in 1000 coordinates
-        rotated_struct = self.rotate_car(self.car_struct, degrees=angle)
+        rotated_struct = self.rotate_car(self.car_struct, angle=angle)
         rotated_struct += np.array([x,y]) + np.array([10*self.margin,10*self.margin])
         rendered = cv2.fillPoly(self.background.copy(), [rotated_struct], self.color)
         rendered = cv2.resize(np.flip(rendered, axis=0), (700,700))

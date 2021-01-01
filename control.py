@@ -9,10 +9,8 @@ class Car_Dynamics:
         self.x = x_0
         self.y = y_0
         self.v = v_0
-        self.phi = np.deg2rad(phi_0)
+        self.phi = phi_0
         self.state = np.array([[self.x, self.y, self.v, self.phi]]).T
-
-        # self.u_k = np.array([[0, 0]]).T
 
     def move(self, accelerate, steer):
         delta = np.deg2rad(steer)
@@ -21,7 +19,6 @@ class Car_Dynamics:
         v_dot = accelerate
         phi_dot = self.v*np.tan(delta)/self.L
         return np.array([[x_dot, y_dot, v_dot, phi_dot]]).T
-
 
     def update_state(self, state_dot):
         # self.u_k = command
@@ -36,14 +33,14 @@ class Car_Dynamics:
 class MPC_Controller:
     def __init__(self, horiz):
         self.horiz = horiz
-        self.R = np.diag([0.01, 0.01])  # input cost matrix
-        self.Rd = np.diag([0.01, 1.0])  # input difference cost matrix
-        self.Q = np.diag([1.0, 1.0, 0.5, 0.5])  # state cost matrix
-        self.Qf = self.Q  # state final matrix
+        self.R = np.diag([0.01, 0.01])                 # input cost matrix
+        self.Rd = np.diag([0.01, 1.0])                 # input difference cost matrix
+        self.Q = np.diag([1.0, 1.0, 0.5, 0.5])         # state cost matrix
+        self.Qf = self.Q                               # state final matrix
 
     def mpc_cost(self, u_k, my_car, x_des, y_des, v_des, phi_des):
         dt = my_car.dt            # sampling time
-        L = my_car.L            # wehicle length
+        L = my_car.L              # wehicle length
         x = my_car.x  
         y = my_car.y  
         v = my_car.v  
@@ -65,11 +62,10 @@ class MPC_Controller:
             phi += dt*phi_dot
             
             z_k[:,i] = [x,y,v,phi]
-            cost += np.sum(self.R@(u_k[:,i]**2))
+            # cost += np.sum(self.R@(u_k[:,i]**2))
             cost += np.sum(self.Q@((desired_state-z_k[:,i])**2))
             # if i < (horiz-1):     
             #     cost += np.sum(Rd@((u_k[:,i+1] - u_k[:,i])**2))
-
         return cost
 
     def optimize(self, my_car, x_des, y_des, v_des, phi_des):
@@ -77,6 +73,8 @@ class MPC_Controller:
         return result.x[0],  result.x[1]
 
 
+
+######################################################################################################################################################################
 
     # def make_model(self, v, phi, delta):        
     #     # matrices
@@ -105,6 +103,3 @@ class MPC_Controller:
     #     A,B,C = self.make_model(self.v, self.phi, delta)
     #     z_k1 = A@self.z_k + B@u_k + C
     #     return u_k, z_k1
-        
-# class MPC_Controller:
-#     def __init__():

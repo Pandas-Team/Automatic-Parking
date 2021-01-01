@@ -9,7 +9,7 @@ from pathplanning import PathPlanning
 from control import *
 from scipy.optimize import minimize
 
-my_car = Car_Dynamics(0,0,0,45,4,0.2)
+my_car = Car_Dynamics(0,0,0,np.deg2rad(45),4,0.2)
 controller = MPC_Controller(horiz=5)
 
 # environment margin  : 3
@@ -34,32 +34,21 @@ print('path = \n',interpolated_path)
 
 env.draw_path(interpolated_path)
 
-# interpolated_path[interpolated_path<0]=0
-
-for i,point in enumerate(interpolated_path[::-1][10:]):
-        computed_angle = np.arctan((interpolated_path[::-1][10:][i+5][1]-interpolated_path[::-1][10:][i][1])/(interpolated_path[::-1][10:][i+5][0]-interpolated_path[::-1][10:][i][0]))
+for i,point in enumerate(interpolated_path):
+        try:
+            computed_angle = np.arctan((interpolated_path[i+5][1]-interpolated_path[i][1])/(interpolated_path[i+5][0]-interpolated_path[i][0]))
+        except:
+            pass
         print(point)
 
         acc, delta = controller.optimize(my_car,point[0],point[1],1,computed_angle)
         my_car.update_state(my_car.move(acc,  np.rad2deg(delta)))
         
-        res = env.render(int(my_car.x*10),int(my_car.y*10),int(np.rad2deg(my_car.phi)))
+        res = env.render(my_car.x, my_car.y, my_car.phi)
         # cv2.imwrite('res.png', res*255)
         # break
         cv2.imshow('environment', res)
         key = cv2.waitKey(1)
-        if key == ord('a'):
-            car_center[0] -= 1
-        if key == ord('d'):
-            car_center[0] += 1
-        if key == ord('w'):
-            car_center[1] += 1
-        if key == ord('s'):
-            car_center[1] -= 1
-        if key == ord('r'):
-            ang += 1
-        if key == ord('e'):
-            ang -= 1
         if key == ord('q'):
             break
         # print(car_center)
