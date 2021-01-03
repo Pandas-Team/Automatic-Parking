@@ -12,8 +12,7 @@ class Car_Dynamics:
         self.phi = phi_0
         self.state = np.array([[self.x, self.y, self.v, self.phi]]).T
 
-    def move(self, accelerate, steer):
-        delta = np.deg2rad(steer)
+    def move(self, accelerate, delta):
         x_dot = self.v*np.cos(self.phi)
         y_dot = self.v*np.sin(self.phi)
         v_dot = accelerate

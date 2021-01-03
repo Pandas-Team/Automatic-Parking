@@ -5,9 +5,9 @@ class Environment():
     def __init__(self,obstacles):
 
         #coordinates are in [x,y] format
-        self.car_length = 40
-        self.car_width = 20
-        self.margin = 3
+        self.car_length = 80
+        self.car_width = 40
+        self.margin = 5
         self.color = np.array([0,0,255])/255
 
         self.car_struct = np.array([[+self.car_length/2, +self.car_width/2],

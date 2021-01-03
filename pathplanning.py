@@ -202,7 +202,7 @@ class AStarPlanner:
 
 class PathPlanning():
     def __init__(self,obstacles):
-        self.margin = 2
+        self.margin = 4
 
         #sacale obstacles from env margin to pathplanning margin
         obstacles = obstacles + np.array([self.margin,self.margin])
@@ -217,7 +217,7 @@ class PathPlanning():
         self.ox = [int(item) for item in self.obs[:,0]]
         self.oy = [int(item) for item in self.obs[:,1]]
         self.grid_size = 1
-        self.robot_radius = 2
+        self.robot_radius = 4
         self.a_star = AStarPlanner(self.ox, self.oy, self.grid_size, self.robot_radius)
 
     def plan_path(self,sx, sy, gx, gy):       
