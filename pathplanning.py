@@ -221,12 +221,7 @@ class PathPlanning():
         self.a_star = AStarPlanner(self.ox, self.oy, self.grid_size, self.robot_radius)
 
     def plan_path(self,sx, sy, gx, gy):    
-        s = 4
-        l = 8
-        d = 2
-        w = 4
-
-        rx, ry = self.a_star.planning(sx+self.margin, sy+self.margin, gx+self.margin-(d+w), gy+self.margin+(l+s ))
+        rx, ry = self.a_star.planning(sx+self.margin, sy+self.margin, gx+self.margin, gy+self.margin)
         rx = np.array(rx)-self.margin
         ry = np.array(ry)-self.margin
         path = np.vstack([rx,ry]).T
