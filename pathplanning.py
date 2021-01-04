@@ -230,7 +230,7 @@ class PathPlanning():
         rx = np.array(rx)-self.margin
         ry = np.array(ry)-self.margin
         path = np.vstack([rx,ry]).T
-        return path
+        return path[::-1]
     
     def plan_park_path(self, x1, y1):       
             s = 4
@@ -295,7 +295,7 @@ class PathPlanning():
         rix, riy = self.interpolate_b_spline_path(way_point_x, way_point_y, n_course_point)
         new_path = np.vstack([rix,riy]).T
         # new_path[new_path<0] = 0
-        return new_path[::-1]
+        return new_path
 
     def interpolate_park_path(self, path):
         choices = np.arange(0,len(path),2)

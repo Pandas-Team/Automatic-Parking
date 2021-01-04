@@ -47,7 +47,7 @@ class Environment():
     
     def draw_path(self, path):
         path = np.array(path)*10
-        color = np.random.rand(3)
+        color = np.random.randint(0,150,3)/255
         path = path.astype(int)
         for p in path:
             self.background[p[1]+10*self.margin:p[1]+10*self.margin+3,p[0]+10*self.margin:p[0]+10*self.margin+3]=color
@@ -78,6 +78,13 @@ class Environment():
                 rotated_wheel = self.rotate_car(self.wheel_struct, angle=phi)
             rotated_wheel += np.array([x,y]) + wheel + np.array([10*self.margin,10*self.margin])
             rendered = cv2.fillPoly(rendered, [rotated_wheel], self.wheel_color)
+
+        # gel
+        gel = np.vstack([np.random.randint(-50,-30,16),np.hstack([np.random.randint(-20,-10,8),np.random.randint(10,20,8)])]).T
+        gel = self.rotate_car(gel, angle=phi)
+        gel += np.array([x,y]) + np.array([10*self.margin,10*self.margin])
+        gel = np.vstack([gel,gel+[1,0],gel+[0,1],gel+[1,1]])
+        rendered[gel[:,1],gel[:,0]] = np.array([60,60,135])/255
 
         rendered = cv2.resize(np.flip(rendered, axis=0), (700,700))
         return rendered
