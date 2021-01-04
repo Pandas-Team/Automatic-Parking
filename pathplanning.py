@@ -220,12 +220,63 @@ class PathPlanning():
         self.robot_radius = 4
         self.a_star = AStarPlanner(self.ox, self.oy, self.grid_size, self.robot_radius)
 
-    def plan_path(self,sx, sy, gx, gy):       
-        rx, ry = self.a_star.planning(sx+self.margin, sy+self.margin, gx+self.margin, gy+self.margin)
+    def plan_path(self,sx, sy, gx, gy):    
+        s = 4
+        l = 8
+        d = 2
+        w = 4
+
+        rx, ry = self.a_star.planning(sx+self.margin, sy+self.margin, gx+self.margin-(d+w), gy+self.margin+(l+s ))
         rx = np.array(rx)-self.margin
         ry = np.array(ry)-self.margin
         path = np.vstack([rx,ry]).T
         return path
+    
+    def plan_park_path(self, x1, y1):       
+            s = 4
+            l = 8
+            d = 2
+            w = 4
+
+            x0 = x1 - d - w
+            y0 = y1 + l + s
+            
+            curve_x = np.array([])
+            curve_y = np.array([])
+            
+            y = np.arange(y1,y0)
+            circle_fun = (6.9**2 - (y-y0)**2)
+
+            x = (np.sqrt(circle_fun[circle_fun>=0]) + x0+6.9)
+            y = y[circle_fun>=0]
+            x = (x - 2*(x-(x0+6.9)))
+            
+            choices = x<x0+6.9/2
+            x=x[choices]
+            y=y[choices]
+            
+            curve_x = np.append(curve_x, x[::-1])
+            curve_y = np.append(curve_y, y[::-1])
+            
+            y = np.arange(y1,y0)
+            circle_fun = (6.9**2 - (y-y1)**2)
+
+            x = (np.sqrt(circle_fun[circle_fun>=0]) + x1-6.9)
+            y = y[circle_fun>=0]
+            x = x#.astype(int)
+            # x = (x - 2*(x-(x1+7))).astype(int)
+
+            choices = x>x1-7/2
+
+            x=x[choices]
+            y=y[choices]
+
+            curve_x = np.append(curve_x, x[::-1])
+            curve_y = np.append(curve_y, y[::-1])
+
+            park_path = np.vstack([curve_x, curve_y]).T
+            
+            return park_path
 
     def interpolate_b_spline_path(self, x, y, n_path_points, degree=3):
         ipl_t = np.linspace(0.0, len(x) - 1, len(x))
@@ -240,11 +291,23 @@ class PathPlanning():
             choices = np.append(choices,len(path)-1)
         way_point_x = path[choices,0]
         way_point_y = path[choices,1]
-        n_course_point = 1000
+        n_course_point = int(len(way_point_x)*20)
+        rix, riy = self.interpolate_b_spline_path(way_point_x, way_point_y, n_course_point)
+        new_path = np.vstack([rix,riy]).T
+        # new_path[new_path<0] = 0
+        return new_path[::-1]
+
+    def interpolate_park_path(self, path):
+        choices = np.arange(0,len(path),2)
+        if len(path)-1 not in choices:
+            choices = np.append(choices,len(path)-1)
+        way_point_x = path[choices,0]
+        way_point_y = path[choices,1]
+        n_course_point = 30
         rix, riy = self.interpolate_b_spline_path(way_point_x, way_point_y, n_course_point)
         new_path = (np.vstack([rix,riy]).T)
         # new_path[new_path<0] = 0
-        return new_path[::-1][10:]
+        return new_path
 
 
 

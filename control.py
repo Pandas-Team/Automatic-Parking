@@ -37,6 +37,14 @@ class MPC_Controller:
         self.Q = np.diag([1.0, 1.0, 0.5, 0.5])         # state cost matrix
         self.Qf = self.Q                               # state final matrix
 
+    def constraint0(self, u_k):
+        u_k = u_k.reshape(self.horiz,2).T
+        # max_in = np.array([np.array([5]*5),np.repeat(np.deg2rad(30),5)])
+        max_in = np.array([[5],[np.deg2rad(30)]])
+
+        return np.sum(np.diag([0.1,10])@(max_in**2-u_k[:,:1]**2))
+
+
     def mpc_cost(self, u_k, my_car, x_des, y_des, v_des, phi_des):
         dt = my_car.dt            # sampling time
         L = my_car.L              # wehicle length
@@ -68,7 +76,17 @@ class MPC_Controller:
         return cost
 
     def optimize(self, my_car, x_des, y_des, v_des, phi_des):
-        result = minimize(self.mpc_cost, args=(my_car, x_des, y_des, v_des, phi_des), x0 = np.zeros((2*self.horiz)), method='BFGS')
+        con0 = {'type': 'ineq', 'fun': self.constraint0}
+        result = minimize(self.mpc_cost, args=(my_car, x_des, y_des, v_des, phi_des), x0 = np.zeros((2*self.horiz)), method='SLSQP', constraints=[con0])
+        # accelerate = result.x[0]
+        # delta = result.x[1]
+        # max_delta = 45
+        # if np.deg2rad(-max_delta)<=result.x[1]<=np.deg2rad(max_delta):
+        #     delta = result.x[1]
+        # elif result.x[1]>np.deg2rad(max_delta):
+        #     delta = np.deg2rad(max_delta)
+        # else:
+        #     delta = np.deg2rad(-max_delta)
         return result.x[0],  result.x[1]
 
 
