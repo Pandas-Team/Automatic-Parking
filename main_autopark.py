@@ -18,11 +18,11 @@ end   = np.array([90,80])
 # pathplanning margin : 4
 
 ########################## defining obstacles ###############################################
-# obs1 = np.array([[30,i] for i in range(-5,80)] + [[70,i] for i in range(20,105)]) 
-# obs2 = np.array([[i,50] for i in range(50,70)]) 
+obs1 = np.array([[30,i] for i in range(-5,80)] + [[70,i] for i in range(20,105)]) 
+obs2 = np.array([[i,50] for i in range(50,70)]) 
 
-obs = np.array([[30,i] for i in range(30,70)] + [[70,i] for i in range(30,70)] + [[i,30] for i in range(30,70)] + [[i,70] for i in range(30,70)]) 
-# obs = np.vstack([obs1,obs2])
+# obs = np.array([[30,i] for i in range(30,70)] + [[70,i] for i in range(30,70)] + [[i,30] for i in range(30,70)] + [[i,70] for i in range(30,70)]) 
+obs = np.vstack([obs1,obs2])
 
 # new_obs = np.array([[78,78],[79,79],[78,79]])
 # obs = np.vstack([obs,new_obs])
