@@ -10,7 +10,7 @@ from utils import angle_of_line, get_planning_points
 ########################## default variables ################################################
 
 start = np.array([0,0])
-end   = np.array([95,44])
+end   = np.array([90,80])
 
 #############################################################################################
 
@@ -25,8 +25,8 @@ obs2 = np.array([[i,50] for i in range(50,70)])
 obs = np.vstack([obs1,obs2])
 
 
-parking1 = Parking1(6)
-obs = parking1.generate_obstacles()
+parking1 = Parking1(7)
+end, obs = parking1.generate_obstacles()
 
 # new_obs = np.array([[78,78],[79,79],[78,79]])
 # obs = np.vstack([obs,new_obs])

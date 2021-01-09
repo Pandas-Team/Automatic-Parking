@@ -93,7 +93,7 @@ class Environment():
 class Parking1():
     def __init__(self, car_pos):
         self.car_obstacle = self.make_car()
-        self.walls = [[80,i] for i in range(20,105)] + [[i,20] for i in range(-5,50)]
+        self.walls = [[70,i] for i in range(-5,80)] + [[i,20] for i in range(-5,50)]
         # self.walls = [0,100]
         self.obs = np.array(self.walls)
         self.cars = {1 : [65,20],
@@ -108,6 +108,7 @@ class Parking1():
                      10: [95,68],
                      11: [65,80],
                      12: [95,80]}
+        self.end = self.cars[car_pos]
         self.cars.pop(car_pos)
         
 
@@ -115,7 +116,7 @@ class Parking1():
         for i in self.cars.keys():
             obstacle = self.car_obstacle + self.cars[i]
             self.obs = np.append(self.obs, obstacle)
-        return np.array(self.obs).reshape(-1,2)
+        return self.end, np.array(self.obs).reshape(-1,2)
 
 
     def make_car(self):

@@ -282,11 +282,9 @@ class PathPlanning():
 
     def interpolate_path(self, path):
         choices = np.arange(0,len(path),int(len(path)/32))
-        if len(path)-1 not in choices:
-            choices = np.append(choices,len(path)-1)
         way_point_x = path[choices,0]
         way_point_y = path[choices,1]
-        n_course_point = int(len(way_point_x)*20)
+        n_course_point = int(len(choices)*18)
         rix, riy = self.interpolate_b_spline_path(way_point_x, way_point_y, n_course_point)
         new_path = np.vstack([rix,riy]).T
         # new_path[new_path<0] = 0
