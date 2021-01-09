@@ -15,7 +15,7 @@ end   = np.array([90,80])
 #############################################################################################
 
 # environment margin  : 5
-# pathplanning margin : 4
+# pathplanning margin : 5
 
 ########################## defining obstacles ###############################################
 obs1 = np.array([[30,i] for i in range(-5,80)] + [[70,i] for i in range(20,105)]) 
@@ -25,7 +25,7 @@ obs2 = np.array([[i,50] for i in range(50,70)])
 obs = np.vstack([obs1,obs2])
 
 
-parking1 = Parking1(7)
+parking1 = Parking1(5)
 end, obs = parking1.generate_obstacles()
 
 # new_obs = np.array([[78,78],[79,79],[78,79]])
@@ -46,7 +46,7 @@ path = np.vstack([path, ensure_path1])
 interpolated_path = path_planner.interpolate_path(path)
 # print('path = \n',interpolated_path)
 
-park_path = path_planner.plan_park_path(x_ensure2, y_ensure2)
+park_path = path_planner.plan_park_path_up_left(x_ensure2, y_ensure2)
 interpolated_park_path = path_planner.interpolate_park_path(park_path)
 interpolated_park_path = np.vstack([ensure_path1[::-1], interpolated_park_path, ensure_path2[::-1]])
 
