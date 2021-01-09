@@ -217,7 +217,7 @@ class PathPlanning():
         self.ox = [int(item) for item in self.obs[:,0]]
         self.oy = [int(item) for item in self.obs[:,1]]
         self.grid_size = 1
-        self.robot_radius = 4
+        self.robot_radius = 3
         self.a_star = AStarPlanner(self.ox, self.oy, self.grid_size, self.robot_radius)
 
     def plan_path(self,sx, sy, gx, gy):    
@@ -298,7 +298,7 @@ class PathPlanning():
             choices = np.append(choices,len(path)-1)
         way_point_x = path[choices,0]
         way_point_y = path[choices,1]
-        n_course_point = 30
+        n_course_point = 50
         rix, riy = self.interpolate_b_spline_path(way_point_x, way_point_y, n_course_point)
         new_path = (np.vstack([rix,riy]).T)
         # new_path[new_path<0] = 0

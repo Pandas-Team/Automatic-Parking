@@ -13,7 +13,8 @@ def get_planning_points(end):
     y_ensure2 = end[1]
     x_ensure1 = x_ensure2 - d - w
     y_ensure1 = y_ensure2 + l + s
-    ensure_path1 = np.vstack([np.repeat(x_ensure1,10), np.arange(y_ensure1,y_ensure1+5,0.5)]).T
-    ensure_path2 = np.vstack([np.repeat(x_ensure2,10), np.arange(y_ensure2-5,80,0.5)]).T
+
+    ensure_path1 = np.vstack([np.repeat(x_ensure1,4/0.25), np.arange(y_ensure1,y_ensure1+4,0.25)]).T
+    ensure_path2 = np.vstack([np.repeat(x_ensure2,4/0.25), np.arange(y_ensure2-4,y_ensure2,0.25)]).T
     
     return x_ensure1, y_ensure1, x_ensure2, y_ensure2, ensure_path1, ensure_path2

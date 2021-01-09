@@ -88,3 +88,37 @@ class Environment():
 
         rendered = cv2.resize(np.flip(rendered, axis=0), (700,700))
         return rendered
+
+
+class Parking1():
+    def __init__(self, car_pos):
+        self.car_obstacle = self.make_car()
+        self.walls = [[80,i] for i in range(20,105)] + [[i,20] for i in range(-5,50)]
+        # self.walls = [0,100]
+        self.obs = np.array(self.walls)
+        self.cars = {1 : [65,20],
+                     2 : [95,20],
+                     3 : [65,32],
+                     4 : [95,32],
+                     5 : [65,44],
+                     6 : [95,44],
+                     7 : [65,56],
+                     8 : [95,56],
+                     9 : [65,68],
+                     10: [95,68],
+                     11: [65,80],
+                     12: [95,80]}
+        self.cars.pop(car_pos)
+        
+
+    def generate_obstacles(self):
+        for i in self.cars.keys():
+            obstacle = self.car_obstacle + self.cars[i]
+            self.obs = np.append(self.obs, obstacle)
+        return np.array(self.obs).reshape(-1,2)
+
+
+    def make_car(self):
+        car_obstacle_x, car_obstacle_y = np.meshgrid(np.arange(-2,2), np.arange(-4,4))
+        car_obstacle = np.dstack([car_obstacle_x, car_obstacle_y]).reshape(-1,2)
+        return car_obstacle
