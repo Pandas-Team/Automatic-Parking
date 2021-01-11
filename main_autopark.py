@@ -42,8 +42,8 @@ key = cv2.waitKey(1)
 #############################################################################################
 
 ############################# path planning #################################################
-path_planner = PathPlanning(obs)
 park_path_planner = ParkPathPlanning(obs)
+path_planner = PathPlanning(obs)
 
 print('planning park scenario ...')
 new_end, park_path, ensure_path1, ensure_path2 = park_path_planner.generate_park_behavior(int(start[0]),int(start[1]),int(end[0]),int(end[1]))
