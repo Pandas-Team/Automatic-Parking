@@ -288,8 +288,8 @@ class ParkPathPlanning():
             x_ensure1 = x_ensure2 + d + w
             y_ensure1 = y_ensure2 - l - s
             
-            ensure_path1 = np.vstack([np.repeat(x_ensure1,4/0.25), np.arange(y_ensure1,y_ensure1+4,0.25)[::-1]]).T
-            ensure_path2 = np.vstack([np.repeat(x_ensure2,4/0.25), np.arange(y_ensure2-4,y_ensure2,0.25)[::-1]]).T
+            ensure_path1 = np.vstack([np.repeat(x_ensure1,4/0.25), np.arange(y_ensure1-4,y_ensure1,0.25)[::-1]]).T
+            ensure_path2 = np.vstack([np.repeat(x_ensure2,4/0.25), np.arange(y_ensure2,y_ensure2+4,0.25)[::-1]]).T
             park_path = self.plan_parking_path_down_right(x_ensure2, y_ensure2)
 
         elif math.atan2(-1,0) < computed_angle < math.atan2(0,1):
