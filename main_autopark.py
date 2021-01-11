@@ -3,9 +3,9 @@ import numpy as np
 from time import sleep
 
 from environment import Environment, Parking1
-from pathplanning import PathPlanning
+from pathplanning import PathPlanning, ParkPathPlanning
 from control import Car_Dynamics, MPC_Controller
-from utils import angle_of_line, get_planning_points
+from utils import angle_of_line
 
 ########################## default variables ################################################
 
@@ -25,14 +25,12 @@ obs2 = np.array([[i,50] for i in range(50,70)])
 obs = np.vstack([obs1,obs2])
 
 
-parking1 = Parking1(5)
+parking1 = Parking1(4)
 end, obs = parking1.generate_obstacles()
 
 # new_obs = np.array([[78,78],[79,79],[78,79]])
 # obs = np.vstack([obs,new_obs])
 #############################################################################################
-
-x_ensure1, y_ensure1, x_ensure2, y_ensure2, ensure_path1, ensure_path2 = get_planning_points(end)
 
 env = Environment(obs)
 my_car = Car_Dynamics(start[0], start[1], 0, np.deg2rad(0), length=4, dt=0.2)
@@ -40,14 +38,16 @@ controller = MPC_Controller(horiz=5)
 
 ############################# path planning #################################################
 path_planner = PathPlanning(obs)
-path = path_planner.plan_path(int(start[0]),int(start[1]),x_ensure1,y_ensure1)
+park_path_planner = ParkPathPlanning(obs)
+
+new_end, park_path, ensure_path1, ensure_path2 = park_path_planner.generate_park_behavior(int(start[0]),int(start[1]),int(end[0]),int(end[1]))
+path = path_planner.plan_path(int(start[0]),int(start[1]),int(new_end[0]),int(new_end[1]))
 
 path = np.vstack([path, ensure_path1])
 interpolated_path = path_planner.interpolate_path(path)
 # print('path = \n',interpolated_path)
 
-park_path = path_planner.plan_park_path_up_left(x_ensure2, y_ensure2)
-interpolated_park_path = path_planner.interpolate_park_path(park_path)
+interpolated_park_path = park_path_planner.interpolate_park_path(park_path)
 interpolated_park_path = np.vstack([ensure_path1[::-1], interpolated_park_path, ensure_path2[::-1]])
 
 env.draw_path(interpolated_path)

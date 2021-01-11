@@ -1,6 +1,7 @@
 import numpy as np
 import math
 import scipy.interpolate as scipy_interpolate
+from utils import angle_of_line
 
 
 class AStarPlanner:
@@ -244,6 +245,89 @@ class PathPlanning():
         # new_path[new_path<0] = 0
         return new_path
 
+
+
+
+
+class ParkPathPlanning():
+    def __init__(self,obstacles):
+        self.margin = 5
+
+        #sacale obstacles from env margin to pathplanning margin
+        obstacles = obstacles + np.array([self.margin,self.margin])
+        obstacles = obstacles[(obstacles[:,0]>=0) & (obstacles[:,1]>=0)]
+
+        self.obs = np.concatenate([np.array([[0,i] for i in range(100+self.margin)]),
+                                  np.array([[100+2*self.margin,i] for i in range(100+2*self.margin)]),
+                                  np.array([[i,0] for i in range(100+self.margin)]),
+                                  np.array([[i,100+2*self.margin] for i in range(100+2*self.margin)]),
+                                  obstacles])
+
+        self.ox = [int(item) for item in self.obs[:,0]]
+        self.oy = [int(item) for item in self.obs[:,1]]
+        self.grid_size = 1
+        self.robot_radius = 3
+        self.a_star = AStarPlanner(self.ox, self.oy, self.grid_size, self.robot_radius)
+
+    def generate_park_behavior(self,sx, sy, gx, gy):    
+        rx, ry = self.a_star.planning(sx+self.margin, sy+self.margin, gx+self.margin, gy+self.margin)
+        rx = np.array(rx)-self.margin
+        ry = np.array(ry)-self.margin
+        path = np.vstack([rx,ry]).T
+        path = path[::-1]
+        computed_angle = angle_of_line(path[-10][0],path[-10][1],path[-1][0],path[-1][1])
+        
+        s = 4
+        l = 8
+        d = 2
+        w = 4
+
+        if math.atan2(-1,-1) < computed_angle < math.atan2(-1,0):
+            x_ensure2 = gx
+            y_ensure2 = gy
+            x_ensure1 = x_ensure2 + d + w
+            y_ensure1 = y_ensure2 - l - s
+            
+            ensure_path1 = np.vstack([np.repeat(x_ensure1,4/0.25), np.arange(y_ensure1,y_ensure1+4,0.25)[::-1]]).T
+            ensure_path2 = np.vstack([np.repeat(x_ensure2,4/0.25), np.arange(y_ensure2-4,y_ensure2,0.25)[::-1]]).T
+            park_path = self.plan_parking_path_down_right(x_ensure2, y_ensure2)
+
+        elif math.atan2(-1,0) < computed_angle < math.atan2(0,1):
+            x_ensure2 = gx
+            y_ensure2 = gy
+            x_ensure1 = x_ensure2 - d - w
+            y_ensure1 = y_ensure2 - l - s 
+            ensure_path1 = np.vstack([np.repeat(x_ensure1,4/0.25), np.arange(y_ensure1-4,y_ensure1,0.25)[::-1]]).T
+            ensure_path2 = np.vstack([np.repeat(x_ensure2,4/0.25), np.arange(y_ensure2,y_ensure2+4,0.25)[::-1]]).T
+            park_path = self.plan_parking_path_down_left(x_ensure2, y_ensure2)
+
+        elif math.atan2(0,1) < computed_angle < math.atan2(1,0):
+            x_ensure2 = gx
+            y_ensure2 = gy
+            x_ensure1 = x_ensure2 - d - w
+            y_ensure1 = y_ensure2 + l + s
+            ensure_path1 = np.vstack([np.repeat(x_ensure1,4/0.25), np.arange(y_ensure1,y_ensure1+4,0.25)]).T
+            ensure_path2 = np.vstack([np.repeat(x_ensure2,4/0.25), np.arange(y_ensure2-4,y_ensure2,0.25)]).T
+            park_path = self.plan_park_path_up_left(x_ensure2, y_ensure2)
+
+        elif math.atan2(1,0) < computed_angle < math.atan2(0,-1):
+            x_ensure2 = gx
+            y_ensure2 = gy
+            x_ensure1 = x_ensure2 + d + w
+            y_ensure1 = y_ensure2 + l + s
+            ensure_path1 = np.vstack([np.repeat(x_ensure1,4/0.25), np.arange(y_ensure1,y_ensure1+4,0.25)]).T
+            ensure_path2 = np.vstack([np.repeat(x_ensure2,4/0.25), np.arange(y_ensure2-4,y_ensure2,0.25)]).T
+            park_path = self.plan_park_path_up_right(x_ensure2, y_ensure2)
+
+        return np.array([x_ensure1, y_ensure1]), park_path, ensure_path1, ensure_path2
+
+    def interpolate_b_spline_path(self, x, y, n_path_points, degree=3):
+        ipl_t = np.linspace(0.0, len(x) - 1, len(x))
+        spl_i_x = scipy_interpolate.make_interp_spline(ipl_t, x, k=degree)
+        spl_i_y = scipy_interpolate.make_interp_spline(ipl_t, y, k=degree)
+        travel = np.linspace(0.0, len(x) - 1, n_path_points)
+        return spl_i_x(travel), spl_i_y(travel)
+
     def interpolate_park_path(self, path):
         choices = np.arange(0,len(path),2)
         if len(path)-1 not in choices:
@@ -253,8 +337,10 @@ class PathPlanning():
         n_course_point = 50
         rix, riy = self.interpolate_b_spline_path(way_point_x, way_point_y, n_course_point)
         new_path = (np.vstack([rix,riy]).T)
+        print(new_path)
         # new_path[new_path<0] = 0
         return new_path
+
 
     def plan_park_path_up_right(self, x1, y1):       
             s = 4
@@ -403,4 +489,3 @@ class PathPlanning():
             
             park_path = np.vstack([curve_x, curve_y]).T
             return park_path
-
