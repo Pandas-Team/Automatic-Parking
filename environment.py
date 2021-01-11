@@ -3,9 +3,7 @@ import numpy as np
 
 class Environment():
     def __init__(self,obstacles):
-
         self.margin = 5
-
         #coordinates are in [x,y] format
         self.car_length = 80
         self.car_width = 40
@@ -27,8 +25,6 @@ class Environment():
                                       [-self.wheel_length/2, -self.wheel_width/2],
                                       [-self.wheel_length/2, +self.wheel_width/2]], 
                                       np.int32)
-
-
 
         #height and width
         self.background = np.ones((1000+20*self.margin,1000+20*self.margin,3))
@@ -55,7 +51,6 @@ class Environment():
     def rotate_car(self, pts, angle=0):
         R = np.array([[np.cos(angle), -np.sin(angle)],
                     [np.sin(angle),  np.cos(angle)]])
-        
         return ((R @ pts.T).T).astype(int)
 
     def render(self, x, y, phi, delta):
@@ -96,22 +91,20 @@ class Parking1():
         self.walls = [[70,i] for i in range(-5,90)] +[[30,i] for i in range(10,105)] #+ [[i,20] for i in range(-5,50)]
         # self.walls = [0,100]
         self.obs = np.array(self.walls)
-        self.cars = {1 : [65,20], 2 : [75,20], 3 : [95,20],
-                     4 : [65,32], 5 : [75,32], 6 : [95,32],
-                     7 : [65,44], 8 : [75,44], 9 : [95,44],
-                     10: [65,56], 11: [75,56], 12: [95,56],
-                     13: [65,68], 14: [75,68], 15: [95,68],
-                     16: [65,80], 17: [75,80], 18: [95,80]}
+        self.cars = {1 : [35,20], 2 : [65,20], 3 : [75,20], 4 : [95,20],
+                     5 : [35,32], 6 : [65,32], 7 : [75,32], 8 : [95,32],
+                     9 : [35,44], 10: [65,44], 11: [75,44], 12: [95,44],
+                     13: [35,56], 14: [65,56], 15: [75,56], 16: [95,56],
+                     17: [35,68], 18: [65,68], 19: [75,68], 20: [95,68],
+                     21: [35,80], 22: [65,80], 23: [75,80], 24: [95,80]}
         self.end = self.cars[car_pos]
         self.cars.pop(car_pos)
-        
 
     def generate_obstacles(self):
         for i in self.cars.keys():
             obstacle = self.car_obstacle + self.cars[i]
             self.obs = np.append(self.obs, obstacle)
         return self.end, np.array(self.obs).reshape(-1,2)
-
 
     def make_car(self):
         car_obstacle_x, car_obstacle_y = np.meshgrid(np.arange(-2,2), np.arange(-4,4))

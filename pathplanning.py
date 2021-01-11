@@ -182,7 +182,7 @@ class AStarPlanner:
                 y = self.calc_grid_position(iy, self.min_y)
                 for iox, ioy in zip(ox, oy):
                     d = math.hypot(iox - x, ioy - y)
-                    if d <= self.rr:
+                    if d < self.rr:
                         self.obstacle_map[ix][iy] = True
                         break
 
@@ -204,7 +204,6 @@ class AStarPlanner:
 class PathPlanning():
     def __init__(self,obstacles):
         self.margin = 5
-
         #sacale obstacles from env margin to pathplanning margin
         obstacles = obstacles + np.array([self.margin,self.margin])
         obstacles = obstacles[(obstacles[:,0]>=0) & (obstacles[:,1]>=0)]
@@ -218,13 +217,13 @@ class PathPlanning():
         self.ox = [int(item) for item in self.obs[:,0]]
         self.oy = [int(item) for item in self.obs[:,1]]
         self.grid_size = 1
-        self.robot_radius = 3
+        self.robot_radius = 4
         self.a_star = AStarPlanner(self.ox, self.oy, self.grid_size, self.robot_radius)
 
     def plan_path(self,sx, sy, gx, gy):    
         rx, ry = self.a_star.planning(sx+self.margin, sy+self.margin, gx+self.margin, gy+self.margin)
-        rx = np.array(rx)-self.margin
-        ry = np.array(ry)-self.margin
+        rx = np.array(rx)-self.margin+0.5
+        ry = np.array(ry)-self.margin+0.5
         path = np.vstack([rx,ry]).T
         return path[::-1]
 
@@ -252,7 +251,6 @@ class PathPlanning():
 class ParkPathPlanning():
     def __init__(self,obstacles):
         self.margin = 5
-
         #sacale obstacles from env margin to pathplanning margin
         obstacles = obstacles + np.array([self.margin,self.margin])
         obstacles = obstacles[(obstacles[:,0]>=0) & (obstacles[:,1]>=0)]
@@ -266,33 +264,32 @@ class ParkPathPlanning():
         self.ox = [int(item) for item in self.obs[:,0]]
         self.oy = [int(item) for item in self.obs[:,1]]
         self.grid_size = 1
-        self.robot_radius = 3
+        self.robot_radius = 4
         self.a_star = AStarPlanner(self.ox, self.oy, self.grid_size, self.robot_radius)
 
     def generate_park_behavior(self,sx, sy, gx, gy):    
         rx, ry = self.a_star.planning(sx+self.margin, sy+self.margin, gx+self.margin, gy+self.margin)
-        rx = np.array(rx)-self.margin
-        ry = np.array(ry)-self.margin
+        rx = np.array(rx)-self.margin+0.5
+        ry = np.array(ry)-self.margin+0.5
         path = np.vstack([rx,ry]).T
         path = path[::-1]
         computed_angle = angle_of_line(path[-10][0],path[-10][1],path[-1][0],path[-1][1])
-        
+
         s = 4
         l = 8
         d = 2
         w = 4
 
-        if math.atan2(-1,-1) < computed_angle < math.atan2(-1,0):
+        if -math.atan2(0,-1) < computed_angle <= math.atan2(-1,0):
             x_ensure2 = gx
             y_ensure2 = gy
             x_ensure1 = x_ensure2 + d + w
             y_ensure1 = y_ensure2 - l - s
-            
             ensure_path1 = np.vstack([np.repeat(x_ensure1,4/0.25), np.arange(y_ensure1-4,y_ensure1,0.25)[::-1]]).T
             ensure_path2 = np.vstack([np.repeat(x_ensure2,4/0.25), np.arange(y_ensure2,y_ensure2+4,0.25)[::-1]]).T
             park_path = self.plan_parking_path_down_right(x_ensure2, y_ensure2)
 
-        elif math.atan2(-1,0) < computed_angle < math.atan2(0,1):
+        elif math.atan2(-1,0) <= computed_angle <= math.atan2(0,1):
             x_ensure2 = gx
             y_ensure2 = gy
             x_ensure1 = x_ensure2 - d - w
@@ -301,7 +298,7 @@ class ParkPathPlanning():
             ensure_path2 = np.vstack([np.repeat(x_ensure2,4/0.25), np.arange(y_ensure2,y_ensure2+4,0.25)[::-1]]).T
             park_path = self.plan_parking_path_down_left(x_ensure2, y_ensure2)
 
-        elif math.atan2(0,1) < computed_angle < math.atan2(1,0):
+        elif math.atan2(0,1) < computed_angle <= math.atan2(1,0):
             x_ensure2 = gx
             y_ensure2 = gy
             x_ensure1 = x_ensure2 - d - w
@@ -310,7 +307,7 @@ class ParkPathPlanning():
             ensure_path2 = np.vstack([np.repeat(x_ensure2,4/0.25), np.arange(y_ensure2-4,y_ensure2,0.25)]).T
             park_path = self.plan_park_path_up_left(x_ensure2, y_ensure2)
 
-        elif math.atan2(1,0) < computed_angle < math.atan2(0,-1):
+        elif math.atan2(1,0) < computed_angle <= math.atan2(0,-1):
             x_ensure2 = gx
             y_ensure2 = gy
             x_ensure1 = x_ensure2 + d + w
@@ -356,7 +353,6 @@ class ParkPathPlanning():
             circle_fun = (6.9**2 - (y-y0)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x0-6.9)
             y = y[circle_fun>=0]
-            # x = (x - 2*(x-(x0+6.9)))
             choices = x>x0-6.9/2
             x=x[choices]
             y=y[choices]
@@ -367,8 +363,7 @@ class ParkPathPlanning():
             circle_fun = (6.9**2 - (y-y1)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x1+6.9)
             y = y[circle_fun>=0]
-            # x = x#.astype(int)
-            x = (x - 2*(x-(x1+6.9)))#.astype(int)
+            x = (x - 2*(x-(x1+6.9)))
             choices = x<x1+6.9/2
             x=x[choices]
             y=y[choices]
@@ -404,8 +399,6 @@ class ParkPathPlanning():
             circle_fun = (6.9**2 - (y-y1)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x1-6.9)
             y = y[circle_fun>=0]
-            # x = x#.astype(int)
-            # x = (x - 2*(x-(x1+7))).astype(int)
             choices = x>x1-6.9/2
             x=x[choices]
             y=y[choices]
@@ -431,7 +424,6 @@ class ParkPathPlanning():
             circle_fun = (6.9**2 - (y-y0)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x0-6.9)
             y = y[circle_fun>=0]
-            # x = (x - 2*(x-(x0+6.9)))
             choices = x>x0-6.9/2
             x=x[choices]
             y=y[choices]
@@ -442,7 +434,7 @@ class ParkPathPlanning():
             y = np.arange(y0,y1)
             circle_fun = (6.9**2 - (y-y1)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x1+6.9)
-            x = (x - 2*(x-(x1+6.9)))#.astype(int)
+            x = (x - 2*(x-(x1+6.9)))
             y = y[circle_fun>=0]
             choices = x<x1+6.9/2
             x=x[choices]

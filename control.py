@@ -41,9 +41,7 @@ class MPC_Controller:
         u_k = u_k.reshape(self.horiz,2).T
         # max_in = np.array([np.array([5]*5),np.repeat(np.deg2rad(30),5)])
         max_in = np.array([[5],[np.deg2rad(30)]])
-
         return np.sum(np.diag([0.1,10])@(max_in**2-u_k[:,:1]**2))
-
 
     def mpc_cost(self, u_k, my_car, x_des, y_des, v_des, phi_des):
         dt = my_car.dt            # sampling time
