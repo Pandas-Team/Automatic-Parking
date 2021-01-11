@@ -337,7 +337,6 @@ class ParkPathPlanning():
         n_course_point = 50
         rix, riy = self.interpolate_b_spline_path(way_point_x, way_point_y, n_course_point)
         new_path = (np.vstack([rix,riy]).T)
-        print(new_path)
         # new_path[new_path<0] = 0
         return new_path
 
@@ -369,7 +368,7 @@ class ParkPathPlanning():
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x1+6.9)
             y = y[circle_fun>=0]
             # x = x#.astype(int)
-            x = (x - 2*(x-(x1+6.9))).astype(int)
+            x = (x - 2*(x-(x1+6.9)))#.astype(int)
             choices = x<x1+6.9/2
             x=x[choices]
             y=y[choices]
@@ -428,7 +427,7 @@ class ParkPathPlanning():
             
             curve_x = np.array([])
             curve_y = np.array([])
-            y = np.arange(y0,y1,0.1)
+            y = np.arange(y0,y1)
             circle_fun = (6.9**2 - (y-y0)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x0-6.9)
             y = y[circle_fun>=0]
@@ -440,7 +439,7 @@ class ParkPathPlanning():
             curve_x = np.append(curve_x, x)
             curve_y = np.append(curve_y, y)
             
-            y = np.arange(y0,y1,0.1)
+            y = np.arange(y0,y1)
             circle_fun = (6.9**2 - (y-y1)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x1+6.9)
             x = (x - 2*(x-(x1+6.9)))#.astype(int)
@@ -466,7 +465,7 @@ class ParkPathPlanning():
             
             curve_x = np.array([])
             curve_y = np.array([])
-            y = np.arange(y0,y1,0.1)
+            y = np.arange(y0,y1)
             circle_fun = (6.9**2 - (y-y0)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x0+6.9)
             y = y[circle_fun>=0]
@@ -477,7 +476,7 @@ class ParkPathPlanning():
             curve_x = np.append(curve_x, x)
             curve_y = np.append(curve_y, y)
             
-            y = np.arange(y0,y1,0.1)
+            y = np.arange(y0,y1)
             circle_fun = (6.9**2 - (y-y1)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x1-6.9)
             y = y[circle_fun>=0]

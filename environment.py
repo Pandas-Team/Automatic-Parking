@@ -93,7 +93,7 @@ class Environment():
 class Parking1():
     def __init__(self, car_pos):
         self.car_obstacle = self.make_car()
-        self.walls = [[70,i] for i in range(-5,90)] + [[i,20] for i in range(-5,50)]
+        self.walls = [[70,i] for i in range(-5,90)] +[[30,i] for i in range(10,105)] #+ [[i,20] for i in range(-5,50)]
         # self.walls = [0,100]
         self.obs = np.array(self.walls)
         self.cars = {1 : [65,20],

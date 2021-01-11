@@ -9,7 +9,7 @@ from utils import angle_of_line
 
 ########################## default variables ################################################
 
-start = np.array([0,0])
+start = np.array([0,90])
 end   = np.array([90,80])
 
 #############################################################################################
@@ -64,14 +64,11 @@ for i,point in enumerate(interpolated_path):
         print(computed_angle)
         acc, delta = controller.optimize(my_car,point[0],point[1],1,computed_angle)
         my_car.update_state(my_car.move(acc,  delta))
-        
         res = env.render(my_car.x, my_car.y, my_car.phi, delta)
-        # cv2.imwrite('res.png', res*255)
-        # break
         cv2.imshow('environment', res)
         key = cv2.waitKey(1)
-        if key == ord('q'):
-            break
+        if key == ord('s'):
+            cv2.imwrite('res.png', res*255)
 
 
 sleep(2)
@@ -84,14 +81,11 @@ for i,point in enumerate(interpolated_park_path):
         print(computed_angle)
         acc, delta = controller.optimize(my_car,point[0],point[1],-0.1,computed_angle)
         my_car.update_state(my_car.move(acc,  delta))
-        
         res = env.render(my_car.x, my_car.y, my_car.phi, delta)
-        # cv2.imwrite('res.png', res*255)
-        # break
         cv2.imshow('environment', res)
         key = cv2.waitKey(1)
-        if key == ord('q'):
-            break
+        if key == ord('s'):
+            cv2.imwrite('res.png', res*255)
 
 
 for i,point in enumerate(ensure_path2):
@@ -103,14 +97,11 @@ for i,point in enumerate(ensure_path2):
         print(computed_angle)
         acc, delta = controller.optimize(my_car,point[0],point[1],0.1,computed_angle)
         my_car.update_state(my_car.move(acc,  delta))
-        
         res = env.render(my_car.x, my_car.y, my_car.phi, delta)
-        # cv2.imwrite('res.png', res*255)
-        # break
         cv2.imshow('environment', res)
         key = cv2.waitKey(1)
-        if key == ord('q'):
-            break
+        if key == ord('s'):
+            cv2.imwrite('res.png', res*255)
 
 # zeroing car steer
 res = env.render(my_car.x, my_car.y, my_car.phi, 0)
