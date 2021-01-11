@@ -81,6 +81,9 @@ class Environment():
         gel = np.vstack([gel,gel+[1,0],gel+[0,1],gel+[1,1]])
         rendered[gel[:,1],gel[:,0]] = np.array([60,60,135])/255
 
+        new_center = np.array([x,y]) + np.array([10*self.margin,10*self.margin])
+        self.background = cv2.circle(self.background, (new_center[0],new_center[1]), 2, [255/255, 150/255, 100/255], -1)
+
         rendered = cv2.resize(np.flip(rendered, axis=0), (700,700))
         return rendered
 
