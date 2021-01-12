@@ -67,7 +67,7 @@ class MPC_Controller:
             phi += dt*phi_dot
             
             z_k[:,i] = [x,y,v,phi]
-            # cost += np.sum(self.R@(u_k[:,i]**2))
+            cost += np.sum(self.R@(u_k[:,i]**2))
             cost += np.sum(self.Q@((desired_state-z_k[:,i])**2))
             if i < (self.horiz-1):     
                 cost += np.sum(self.Rd@((u_k[:,i+1] - u_k[:,i])**2))
