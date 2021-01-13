@@ -316,7 +316,7 @@ class ParkPathPlanning():
             ensure_path2 = np.vstack([np.repeat(x_ensure2,4/0.25), np.arange(y_ensure2-4,y_ensure2,0.25)]).T
             park_path = self.plan_park_path_up_right(x_ensure2, y_ensure2)
 
-        return np.array([x_ensure1, y_ensure1]), park_path, ensure_path1, ensure_path2
+        return np.array([x_ensure1, y_ensure1]), park_path+[0,1], ensure_path1, ensure_path2
 
     def interpolate_b_spline_path(self, x, y, n_path_points, degree=3):
         ipl_t = np.linspace(0.0, len(x) - 1, len(x))
