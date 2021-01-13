@@ -24,7 +24,7 @@ obs2 = np.array([[i,50] for i in range(50,70)])
 # obs = np.array([[30,i] for i in range(30,70)] + [[70,i] for i in range(30,70)] + [[i,30] for i in range(30,70)] + [[i,70] for i in range(30,70)]) 
 obs = np.vstack([obs1,obs2])
 
-parking1 = Parking1(7)
+parking1 = Parking1(6)
 end, obs = parking1.generate_obstacles()
 
 # new_obs = np.array([[78,78],[79,79],[78,79]])
