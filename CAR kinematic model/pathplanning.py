@@ -201,7 +201,7 @@ class AStarPlanner:
         return motion
 
 
-class PathPlanning():
+class PathPlanning:
     def __init__(self,obstacles):
         self.margin = 5
         #sacale obstacles from env margin to pathplanning margin
@@ -248,7 +248,7 @@ class PathPlanning():
 
 
 
-class ParkPathPlanning():
+class ParkPathPlanning:
     def __init__(self,obstacles):
         self.margin = 5
         #sacale obstacles from env margin to pathplanning margin

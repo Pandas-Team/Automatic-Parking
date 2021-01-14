@@ -5,7 +5,7 @@ from scipy.optimize import minimize
 class Car_Dynamics:
     def __init__(self, x_0, y_0, v_0, phi_0, length, dt):
         self.dt = dt             # sampling time
-        self.L = length          # wehicle length
+        self.L = length          # vehicle length
         self.x = x_0
         self.y = y_0
         self.v = v_0

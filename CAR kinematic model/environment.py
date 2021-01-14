@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-class Environment():
+class Environment:
     def __init__(self,obstacles):
         self.margin = 5
         #coordinates are in [x,y] format
@@ -88,7 +88,7 @@ class Environment():
         return rendered
 
 
-class Parking1():
+class Parking1:
     def __init__(self, car_pos):
         self.car_obstacle = self.make_car()
         self.walls = [[70,i] for i in range(-5,90) ]+\
