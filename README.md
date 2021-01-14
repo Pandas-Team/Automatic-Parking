@@ -3,7 +3,7 @@ This repository contains an auto park system including path planning, path track
 
 run the code using this command:
 ```
-$ python main_autopark.py --x_start 0 --y_start 90 --parking 6
+$ python main_autopark.py --x_start 0 --y_start 90 --parking 7
 ```
 
 ## Envroinment
