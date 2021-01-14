@@ -316,7 +316,7 @@ class ParkPathPlanning():
             ensure_path2 = np.vstack([np.repeat(x_ensure2,4/0.25), np.arange(y_ensure2-4,y_ensure2,0.25)]).T
             park_path = self.plan_park_path_up_right(x_ensure2, y_ensure2)
 
-        return np.array([x_ensure1, y_ensure1]), park_path+[0,1], ensure_path1, ensure_path2
+        return np.array([x_ensure1, y_ensure1]), park_path, ensure_path1, ensure_path2
 
     def interpolate_b_spline_path(self, x, y, n_path_points, degree=3):
         ipl_t = np.linspace(0.0, len(x) - 1, len(x))
@@ -349,7 +349,7 @@ class ParkPathPlanning():
             
             curve_x = np.array([])
             curve_y = np.array([])
-            y = np.arange(y1,y0)
+            y = np.arange(y1,y0+1)
             circle_fun = (6.9**2 - (y-y0)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x0-6.9)
             y = y[circle_fun>=0]
@@ -359,7 +359,7 @@ class ParkPathPlanning():
             curve_x = np.append(curve_x, x[::-1])
             curve_y = np.append(curve_y, y[::-1])
             
-            y = np.arange(y1,y0)
+            y = np.arange(y1,y0+1)
             circle_fun = (6.9**2 - (y-y1)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x1+6.9)
             y = y[circle_fun>=0]
@@ -384,7 +384,7 @@ class ParkPathPlanning():
             
             curve_x = np.array([])
             curve_y = np.array([])
-            y = np.arange(y1,y0)
+            y = np.arange(y1,y0+1)
             circle_fun = (6.9**2 - (y-y0)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x0+6.9)
             y = y[circle_fun>=0]
@@ -395,7 +395,7 @@ class ParkPathPlanning():
             curve_x = np.append(curve_x, x[::-1])
             curve_y = np.append(curve_y, y[::-1])
             
-            y = np.arange(y1,y0)
+            y = np.arange(y1,y0+1)
             circle_fun = (6.9**2 - (y-y1)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x1-6.9)
             y = y[circle_fun>=0]
@@ -420,7 +420,7 @@ class ParkPathPlanning():
             
             curve_x = np.array([])
             curve_y = np.array([])
-            y = np.arange(y0,y1)
+            y = np.arange(y0,y1+1)
             circle_fun = (6.9**2 - (y-y0)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x0-6.9)
             y = y[circle_fun>=0]
@@ -431,7 +431,7 @@ class ParkPathPlanning():
             curve_x = np.append(curve_x, x)
             curve_y = np.append(curve_y, y)
             
-            y = np.arange(y0,y1)
+            y = np.arange(y0,y1+1)
             circle_fun = (6.9**2 - (y-y1)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x1+6.9)
             x = (x - 2*(x-(x1+6.9)))
@@ -457,7 +457,7 @@ class ParkPathPlanning():
             
             curve_x = np.array([])
             curve_y = np.array([])
-            y = np.arange(y0,y1)
+            y = np.arange(y0,y1+1)
             circle_fun = (6.9**2 - (y-y0)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x0+6.9)
             y = y[circle_fun>=0]
@@ -468,7 +468,7 @@ class ParkPathPlanning():
             curve_x = np.append(curve_x, x)
             curve_y = np.append(curve_y, y)
             
-            y = np.arange(y0,y1)
+            y = np.arange(y0,y1+1)
             circle_fun = (6.9**2 - (y-y1)**2)
             x = (np.sqrt(circle_fun[circle_fun>=0]) + x1-6.9)
             y = y[circle_fun>=0]
