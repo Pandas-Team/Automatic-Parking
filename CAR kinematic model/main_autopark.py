@@ -6,7 +6,7 @@ import argparse
 from environment import Environment, Parking1
 from pathplanning import PathPlanning, ParkPathPlanning
 from control import Car_Dynamics, MPC_Controller
-from utils import angle_of_line
+from utils import angle_of_line, DataLogger
 
 
 if __name__ == '__main__':
@@ -18,6 +18,7 @@ if __name__ == '__main__':
     parser.add_argument('--parking', type=int, default=1, help='park position in parking1 out of 24')
 
     args = parser.parse_args()
+    logger = DataLogger()
 
     ########################## default variables ################################################
 
@@ -85,6 +86,7 @@ if __name__ == '__main__':
             acc, delta = controller.optimize(my_car,point[0],point[1],1,computed_angle)
             my_car.update_state(my_car.move(acc,  delta))
             res = env.render(my_car.x, my_car.y, my_car.phi, delta)
+            logger.log(point, my_car, acc, delta)
             cv2.imshow('environment', res)
             key = cv2.waitKey(1)
             if key == ord('s'):
@@ -102,6 +104,7 @@ if __name__ == '__main__':
             acc, delta = controller.optimize(my_car,point[0],point[1],-0.1,computed_angle)
             my_car.update_state(my_car.move(acc,  delta))
             res = env.render(my_car.x, my_car.y, my_car.phi, delta)
+            logger.log(point, my_car, acc, delta)
             cv2.imshow('environment', res)
             key = cv2.waitKey(1)
             if key == ord('s'):
@@ -117,6 +120,7 @@ if __name__ == '__main__':
             acc, delta = controller.optimize(my_car,point[0],point[1],0.1,computed_angle)
             my_car.update_state(my_car.move(acc,  delta))
             res = env.render(my_car.x, my_car.y, my_car.phi, delta)
+            logger.log(point, my_car, acc, delta)
             cv2.imshow('environment', res)
             key = cv2.waitKey(1)
             if key == ord('s'):
@@ -124,6 +128,7 @@ if __name__ == '__main__':
 
     # zeroing car steer
     res = env.render(my_car.x, my_car.y, my_car.phi, 0)
+    logger.save_data()
     cv2.imshow('environment', res)
     key = cv2.waitKey(1)
 
