@@ -27,7 +27,7 @@ The result is a set of points to guide our agent!
 
 ## Path tracking
 
-## Double parking
+## Parallel parking
 This part, consists of 4 rules that agent must choose one according to parking position.
 At first the agent will find a path to park position then it will compute the arriving angle.
 Based on the arriving angle, agent chooses a coordinate as ensure1.
