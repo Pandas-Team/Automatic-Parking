@@ -70,15 +70,6 @@ class MPC_Controller:
     def optimize(self, my_car, x_des, y_des, v_des, psi_des):
         bnd = [(-5, 5),(np.deg2rad(-60), np.deg2rad(60))]*self.horiz
         result = minimize(self.mpc_cost, args=(my_car, x_des, y_des, v_des, psi_des), x0 = np.zeros((2*self.horiz)), method='SLSQP', bounds = bnd)
-        # accelerate = result.x[0]
-        # delta = result.x[1]
-        # max_delta = 45
-        # if np.deg2rad(-max_delta)<=result.x[1]<=np.deg2rad(max_delta):
-        #     delta = result.x[1]
-        # elif result.x[1]>np.deg2rad(max_delta):
-        #     delta = np.deg2rad(max_delta)
-        # else:
-        #     delta = np.deg2rad(-max_delta)
         return np.clip(result.x[0], -5,5),  np.clip(result.x[1], np.deg2rad(-45),np.deg2rad(45))
 
 
