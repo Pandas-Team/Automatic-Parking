@@ -8,7 +8,6 @@ from pathplanning import PathPlanning, ParkPathPlanning
 from control import Car_Dynamics, MPC_Controller
 from utils import angle_of_line, DataLogger
 
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--x_start', type=int, default=0, help='X of start')
@@ -19,7 +18,6 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     logger = DataLogger()
-
     ########################## default variables ################################################
 
     start = np.array([args.x_start, args.y_start])
@@ -133,7 +131,6 @@ if __name__ == '__main__':
 
     sleep(10)
     logger.save_data()
-
     #############################################################################################
 
     cv2.destroyAllWindows()
