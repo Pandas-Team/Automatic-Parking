@@ -95,7 +95,6 @@ class Car_Dynamics:
         r_dot = r_dot
 
 
-
         return np.array([[x_dot, y_dot, psi_dot, u_dot, v_dot, r_dot]]).T
 
     def update_state(self, state_dot):
