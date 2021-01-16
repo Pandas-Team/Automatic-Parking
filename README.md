@@ -15,7 +15,7 @@ A sample of environment is displayed bellow.
 ## Path planning
 
 #### A* algorithm
-Agent will find a path from start to its goal using A*.
+The agent will find a path from start to its goal using A*.
 This implementation of A* from [PythonRobotics](https://pythonrobotics.readthedocs.io/en/latest/modules/path_planning.html), considers parameters like obstacles and robot radius.
 
 #### interpolating path with b-spline
@@ -27,7 +27,7 @@ The result is a set of points to guide our agent!
 ## Path tracking
 
 ## Parallel parking
-This part, consists of 4 rules that agent must choose one according to parking position.
+This part consists of 4 rules that agent must choose one according to parking position.
 At first the agent will find a path to park position then it will compute the arriving angle.
 Based on the arriving angle, agent chooses a coordinate as ensure1.
 After that, parking path is planned from ensure1 to ensure2 using 2 circle equations as mentioned below.
