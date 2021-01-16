@@ -16,7 +16,7 @@ class DataLogger:
 
     def log(self, point, my_car, acc, delta):
         self.path.append(point)
-        self.car_state.append([my_car.x, my_car.y, my_car.v, my_car.psi])
+        self.car_state.append([my_car.x, my_car.y, my_car.psi,my_car.u,my_car.v,my_car.r])
         self.u.append([acc, delta])
 
     def save_data(self):
@@ -49,25 +49,45 @@ class DataLogger:
         plt.legend(['car\'s y', 'reference'], prop=font) # using a named size
         plt.savefig('log results/y.png')
 
-        # plot v
-        plt.figure(figsize=(12,8))
-        plt.scatter(t, self.car_state[:,2], color='r', s=8)
-        plt.title('car\'s speed in time',fontsize=20)
-        plt.xlabel('time (s)',fontsize=20)
-        plt.ylabel('v (m/s)',fontsize=20)
-        plt.grid()
-        plt.legend(['car speed (m/s)'], prop=font) # using a named size
-        plt.savefig('log results/v.png')
-
         # plot psi
         plt.figure(figsize=(12,8))
-        plt.scatter(t, np.rad2deg(self.car_state[:,3]), color='r', s=8)
+        plt.scatter(t, np.rad2deg(self.car_state[:,2]), color='r', s=8)
         plt.title('car\'s angle in time',fontsize=20)
         plt.xlabel('time (s)',fontsize=20)
         plt.ylabel('psi (degree)',fontsize=20)
         plt.grid()
         plt.legend(['car angle (degree)'], prop=font) # using a named size
         plt.savefig('log results/psi.png')
+
+        # plot u
+        plt.figure(figsize=(12,8))
+        plt.scatter(t, self.car_state[:,3], color='r', s=8)
+        plt.title('car\'s u in time',fontsize=20)
+        plt.xlabel('time (s)',fontsize=20)
+        plt.ylabel('u (m/s)',fontsize=20)
+        plt.grid()
+        plt.legend(['car u (m/s)'], prop=font) # using a named size
+        plt.savefig('log results/u.png')
+
+        # plot v
+        plt.figure(figsize=(12,8))
+        plt.scatter(t, self.car_state[:,4], color='r', s=8)
+        plt.title('car\'s v in time',fontsize=20)
+        plt.xlabel('time (s)',fontsize=20)
+        plt.ylabel('v (m/s)',fontsize=20)
+        plt.grid()
+        plt.legend(['car speed (m/s)'], prop=font) # using a named size
+        plt.savefig('log results/v.png')
+
+        # plot r
+        plt.figure(figsize=(12,8))
+        plt.scatter(t, self.car_state[:,5], color='r', s=8)
+        plt.title('car\'s r in time',fontsize=20)
+        plt.xlabel('time (s)',fontsize=20)
+        plt.ylabel('r (m/s)',fontsize=20)
+        plt.grid()
+        plt.legend(['car r (m/s)'], prop=font) # using a named size
+        plt.savefig('log results/r.png')
 
         # plot position
         plt.figure(figsize=(12,12))

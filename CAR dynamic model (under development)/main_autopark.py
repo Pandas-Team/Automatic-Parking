@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     ########################### initialization ##############################################
     env = Environment(obs)
-    my_car = Car_Dynamics(start[0], start[1], 0, 0, 0, 0, length=4, dt=0.106, Gama=0)
+    my_car = Car_Dynamics(start[0], start[1], 0, 0, 0, 0, length=4, dt=0.1, Gama=0)
     controller = MPC_Controller(horiz=5)
 
     res = env.render(my_car.x, my_car.y, my_car.psi, 0)
@@ -76,13 +76,16 @@ if __name__ == '__main__':
 
     ################################## control ##################################################
 
+    # x = t
+    # y = 50
+
     print('driving to destination ...')
     for i,point in enumerate(interpolated_path):
             try:
                 computed_angle = angle_of_line(interpolated_path[i][0],interpolated_path[i][1],interpolated_path[i+10][0],interpolated_path[i+10][1])
             except:
                 pass
-            
+            print()
             acc, delta = controller.optimize(my_car, point[0], point[1], computed_angle)
             my_car.update_state(my_car.move(acc,  delta))
             res = env.render(my_car.x, my_car.y, my_car.psi, delta)
@@ -101,7 +104,7 @@ if __name__ == '__main__':
             except:
                 pass
             
-            acc, delta = controller.optimize(my_car,point[0],point[1],-0.1,computed_angle)
+            acc, delta = controller.optimize(my_car, point[0], point[1], computed_angle)
             my_car.update_state(my_car.move(acc,  delta))
             res = env.render(my_car.x, my_car.y, my_car.psi, delta)
             logger.log(point, my_car, acc, delta)
@@ -117,7 +120,7 @@ if __name__ == '__main__':
             except:
                 pass
             
-            acc, delta = controller.optimize(my_car,point[0],point[1],0.1,computed_angle)
+            acc, delta = controller.optimize(my_car, point[0], point[1], computed_angle)
             my_car.update_state(my_car.move(acc,  delta))
             res = env.render(my_car.x, my_car.y, my_car.psi, delta)
             logger.log(point, my_car, acc, delta)
