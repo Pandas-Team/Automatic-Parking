@@ -126,11 +126,9 @@ if __name__ == '__main__':
 
     # zeroing car steer
     res = env.render(my_car.x, my_car.y, my_car.psi, 0)
-    cv2.imshow('environment', res)
-    key = cv2.waitKey(1)
-
-    sleep(10)
     logger.save_data()
+    cv2.imshow('environment', res)
+    key = cv2.waitKey()
     #############################################################################################
 
     cv2.destroyAllWindows()
