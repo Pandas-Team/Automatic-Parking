@@ -4,7 +4,6 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as font_manager
 
-
 def angle_of_line(x1, y1, x2, y2):
     return math.atan2(y2-y1, x2-x1)
 
