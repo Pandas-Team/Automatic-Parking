@@ -1,0 +1,11 @@
+# pip install -r requirements.txt
+
+# base ----------------------------------------
+
+numpy
+opencv-python
+python-math
+scipy
+times
+matplotlib
+
