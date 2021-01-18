@@ -5,13 +5,17 @@ run the code using this command:
 ```
 $ python main_autopark.py --x_start 0 --y_start 90 --parking 7
 ```
+you can choose the parking spot from 1 to 24:
+
+![parking1](extra/parking1.png)
+
 ## Envroinment
 Our first step to develop an auto park system was to design and develop an environment capable of giving visual render using ```OpenCV``` library.
 Environment is implemented in ```environment.py``` as a class and recieves obstacles at the beginning ```env = Environment(obs)```.
 Agent can be placed using ```env.render(x,y,angle)```.
 A sample of environment is displayed bellow.
 
-![developed environment](extra/env.png)
+![developed environment](extra/environment.png)
 ## Path planning
 
 #### A* algorithm
