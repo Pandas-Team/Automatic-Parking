@@ -6,12 +6,13 @@ import argparse
 from environment import Environment, Parking1
 from pathplanning import PathPlanning, ParkPathPlanning
 from control import Car_Dynamics, MPC_Controller
-from utils import angle_of_line, DataLogger
+from utils import angle_of_line, make_square, DataLogger
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--x_start', type=int, default=0, help='X of start')
     parser.add_argument('--y_start', type=int, default=90, help='Y of start')
+    parser.add_argument('--phi_start', type=int, default=0, help='phi of start')
     parser.add_argument('--x_end', type=int, default=90, help='X of end')
     parser.add_argument('--y_end', type=int, default=80, help='Y of end')
     parser.add_argument('--parking', type=int, default=1, help='park position in parking1 out of 24')
@@ -29,23 +30,33 @@ if __name__ == '__main__':
     # pathplanning margin : 5
 
     ########################## defining obstacles ###############################################
-    obs1 = np.array([[30,i] for i in range(-5,80)] + [[70,i] for i in range(20,105)]) 
-    obs2 = np.array([[i,50] for i in range(50,70)]) 
-
-    # obs = np.array([[30,i] for i in range(30,70)] + [[70,i] for i in range(30,70)] + [[i,30] for i in range(30,70)] + [[i,70] for i in range(30,70)]) 
-    obs = np.vstack([obs1,obs2])
 
     parking1 = Parking1(args.parking)
     end, obs = parking1.generate_obstacles()
 
+    # add squares
+    # square1 = make_square(10,65,20)
+    # square2 = make_square(15,30,20)
+    # square3 = make_square(50,50,10)
+    # obs = np.vstack([obs,square1,square2,square3])
+
+    # Rahneshan logo
+    # start = np.array([50,5])
+    # end = np.array([35,67])
+    # rah = np.flip(cv2.imread('READ_ME/rahneshan_obstacle.png',0), axis=0)
+    # obs = np.vstack([np.where(rah<100)[1],np.where(rah<100)[0]]).T
+
     # new_obs = np.array([[78,78],[79,79],[78,79]])
     # obs = np.vstack([obs,new_obs])
+
     #########################################################################################
 
     ########################### initialization ##############################################
     env = Environment(obs)
-    my_car = Car_Dynamics(start[0], start[1], 0, np.deg2rad(0), length=4, dt=0.2)
+    my_car = Car_Dynamics(start[0], start[1], 0, np.deg2rad(args.phi_start), length=4, dt=0.2)
     controller = MPC_Controller(horiz=5)
+
+    # env.background = cv2.rectangle(env.background, tuple([1000,1000]-(end*10-[40,20]-[50,70])[::-1]), tuple([1000,1000]-(end*10+[40,20]-[50,70])[::-1]), color=[0,1,0], thickness=2)
 
     res = env.render(my_car.x, my_car.y, my_car.psi, 0)
     cv2.imshow('environment', res)
