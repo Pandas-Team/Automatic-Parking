@@ -103,7 +103,7 @@ class Parking1:
                      13: [[35,56]], 14: [[65,56]], 15: [[75,56]], 16: [[95,56]],
                      17: [[35,68]], 18: [[65,68]], 19: [[75,68]], 20: [[95,68]],
                      21: [[35,80]], 22: [[65,80]], 23: [[75,80]], 24: [[95,80]]}
-        self.end = self.cars[car_pos]
+        self.end = self.cars[car_pos][0]
         self.cars.pop(car_pos)
 
     def generate_obstacles(self):

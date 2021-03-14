@@ -69,13 +69,13 @@ if __name__ == '__main__':
 
     print('planning park scenario ...')
     new_end, park_path, ensure_path1, ensure_path2 = park_path_planner.generate_park_scenario(int(start[0]),int(start[1]),int(end[0]),int(end[1]))
+    
     print('routing to destination ...')
     path = path_planner.plan_path(int(start[0]),int(start[1]),int(new_end[0]),int(new_end[1]))
-
     path = np.vstack([path, ensure_path1])
-    interpolated_path = path_planner.interpolate_path(path)
 
     print('interpolating ...')
+    interpolated_path = path_planner.interpolate_path(path)
     interpolated_park_path = park_path_planner.interpolate_park_path(park_path)
     interpolated_park_path = np.vstack([ensure_path1[::-1], interpolated_park_path, ensure_path2[::-1]])
 
