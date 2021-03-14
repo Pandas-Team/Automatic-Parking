@@ -1,5 +1,5 @@
 # Auto Park System : Path Planning, Path Tracking & Control
-This repository contains an auto park system including path planning, path tracking, and double parking in a designed envroinment.
+This repository contains an auto park system including path planning, path tracking, and double parking in a designed environment.
 
 
 run the code using this command:
