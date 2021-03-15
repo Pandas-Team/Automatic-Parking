@@ -47,7 +47,7 @@ u=[a,δ]
 ```
 a: accellation, δ: steering angle
 
-The MPC controller controls vehicle speed and steering base on the model and car is directed through the path.
+The MPC controller controls vehicle speed and steering based on the model and car is directed through the path.
 
 ## Parallel parking
 This part consists of 4 rules that agent must choose one according to parking position.
