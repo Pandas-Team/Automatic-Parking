@@ -28,6 +28,10 @@ After finding a path in a descrete 100\*100 space, the path is smoothed and scal
 The result is a set of points to guide our agent!
 
 ## Path tracking
+˙x =vcos(ϕ)
+˙y =vsin((ϕ)
+˙v =a
+˙ϕ =vtan(δ)L
 
 ## Parallel parking
 This part consists of 4 rules that agent must choose one according to parking position.
