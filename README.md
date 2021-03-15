@@ -57,3 +57,6 @@ After that, parking path is planned from ensure1 to ensure2 using 2 circle equat
 MPC controls the agent and car parks in ensure2 coordinate.
 
 ![double planning](extra/double_parking.png)
+
+## About us
+Team Pandas, have won 1st place in the National Rahneshan competition 2020 for autonomous vehicles. This contest has been one of the most competitive and challenging contests in the Rahneshan tournaments with more than 10 teams competing from top universities in Iran.
