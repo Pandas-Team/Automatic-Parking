@@ -4,7 +4,7 @@ This repository contains an auto park system including path planning, path track
 
 run the code using this command:
 ```
-$ python main_autopark.py --x_start 0 --y_start 90 --parking 7
+$ python main_autopark.py --x_start 0 --y_start 90 --phi_start 45 --parking 7
 ```
 you can choose the parking spot from 1 to 24:
 
