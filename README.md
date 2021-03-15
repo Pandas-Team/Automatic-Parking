@@ -39,7 +39,7 @@ v = a
 ```math
 z=[x,y,v,ϕ]
 ```
-x: x-position, y:y-position, v:velocity, φ: yaw angle
+x: x-position, y: y-position, v: velocity, φ: yaw angle
 
 **Input vector** is:
 ```math
