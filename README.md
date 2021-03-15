@@ -28,12 +28,25 @@ After finding a path in a descrete 100\*100 space, the path is smoothed and scal
 The result is a set of points to guide our agent!
 
 ## Path tracking
+**Kinematic model** of the car, is:
 ```math
-x =vcos(ϕ)
-y =vsin((ϕ)
-v =a
-ϕ =vtan(δ)L
+x = vcos(ϕ)
+y = vsin((ϕ)
+v = a
+ϕ = vtan(δ)L
 ```
+**State vector** is:
+```math
+z=[x,y,v,ϕ]
+```
+x: x-position, y:y-position, v:velocity, φ: yaw angle
+**Input vector** is:
+```math
+u=[a,δ]
+```
+a: accellation, δ: steering angle
+
+The MPC controller controls vehicle speed and steering base on the model and car is directed through the path.
 
 ## Parallel parking
 This part consists of 4 rules that agent must choose one according to parking position.
