@@ -40,6 +40,7 @@ v = a
 z=[x,y,v,ϕ]
 ```
 x: x-position, y:y-position, v:velocity, φ: yaw angle
+
 **Input vector** is:
 ```math
 u=[a,δ]
