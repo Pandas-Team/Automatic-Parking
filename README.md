@@ -1,5 +1,5 @@
-# Auto Park System : Path Planning, Path Tracking & Control
-This repository contains an auto park system including path planning, path tracking, and parallel parking in a designed environment.
+# Autonomous Parallel Parking : Path Planning, Path Tracking & Control
+This repository contains an autonomous parallel parking system including path planning, path tracking, and parallel parking in a designed environment written in python.
 
 
 run the code using this command:
