@@ -59,10 +59,9 @@ MPC controls the agent and car parks in ensure2 coordinate.
 ![double planning](extra/double_parking.png)
 
 ## About us
-### Our Team
 We as Team Pandas won 1st place in the National Rahneshan competition 2020-2021 for autonomous vehicles. This contest has been one of the most competitive and challenging contests in the Rahneshan tournaments with more than 15 teams competing from top universities in Iran.
 
-### Contact us
+## Contact us
 Feel free to contact us via email or connect with us on linkedin.
 
 - Amirhossein Heydarian ---  [Linkedin](https://www.linkedin.com/in/amirhosseinh77/), [Github](https://github.com/amirhosseinh77), [Email](mailto:amirhossein4633@gmail.com )
