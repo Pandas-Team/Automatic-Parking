@@ -17,17 +17,17 @@ Agent can be placed using ```env.render(x,y,angle)```.
 A sample of environment is displayed bellow.
 
 ![developed environment](extra/environment.png)
-## Path planning
+## Path Planning
 
-#### A* algorithm
+#### A* Algorithm
 The agent will find a path from start to its goal using A*.
 This implementation of A* from [PythonRobotics](https://pythonrobotics.readthedocs.io/en/latest/modules/path_planning.html), considers parameters like obstacles and robot radius.
 
-#### interpolating path with b-spline
+#### Interpolating Path With B-spline
 After finding a path in a descrete 100\*100 space, the path is smoothed and scaled to 1000\*1000 space of environment using b-spline.
 The result is a set of points to guide our agent!
 
-## Path tracking
+## Path Tracking
 **Kinematic model** of the car, is:
 ```math
 x = vcos(ϕ)
@@ -49,7 +49,7 @@ a: accellation, δ: steering angle
 
 The MPC controller controls vehicle speed and steering based on the model and car is directed through the path.
 
-## Parallel parking
+## Parallel Parking
 This part consists of 4 rules that agent must choose one according to parking position.
 At first the agent will find a path to park position then it will compute the arriving angle.
 Based on the arriving angle, agent chooses a coordinate as ensure1.
@@ -58,7 +58,7 @@ MPC controls the agent and car parks in ensure2 coordinate.
 
 ![double planning](extra/double_parking.png)
 
-## About us
+## About Us
 We as Team Pandas won 1st place in the National Rahneshan competition 2020-2021 for autonomous vehicles. This contest has been one of the most competitive and challenging contests in the Rahneshan tournaments with more than 15 teams competing from top universities in Iran.
 
 ## Contact
