@@ -30,14 +30,14 @@ class Car_Dynamics:
 
     
 class MPC_Controller:
-    def __init__(self, horiz):
-        self.horiz = horiz
+    def __init__(self):
+        self.horiz = None
         self.R = np.diag([0.01, 0.01])                 # input cost matrix
         self.Rd = np.diag([0.01, 1.0])                 # input difference cost matrix
-        self.Q = np.diag([1.0, 1.0, 0.5, 0.5])         # state cost matrix
+        self.Q = np.diag([1.0, 1.0])         # state cost matrix
         self.Qf = self.Q                               # state final matrix
 
-    def mpc_cost(self, u_k, my_car, x_des, y_des, v_des, psi_des):
+    def mpc_cost(self, u_k, my_car, points):
         dt = my_car.dt            # sampling time
         L = my_car.L              # wehicle length
         x = my_car.x  
@@ -45,9 +45,9 @@ class MPC_Controller:
         v = my_car.v  
         psi = my_car.psi 
         u_k = u_k.reshape(self.horiz,2).T
-        z_k = np.zeros((4,self.horiz+1))
+        z_k = np.zeros((2,self.horiz+1))
         cost = 0.0
-        desired_state = np.array([x_des,y_des,v_des,psi_des])
+        desired_state = points.T
 
         for i in range(self.horiz):
             x_dot = v*np.cos(psi)
@@ -60,16 +60,17 @@ class MPC_Controller:
             v += dt*v_dot
             psi += dt*psi_dot
             
-            z_k[:,i] = [x,y,v,psi]
+            z_k[:,i] = [x,y]
             cost += np.sum(self.R@(u_k[:,i]**2))
-            cost += np.sum(self.Q@((desired_state-z_k[:,i])**2))
+            cost += np.sum(self.Q@((desired_state[:,i]-z_k[:,i])**2))
             if i < (self.horiz-1):     
                 cost += np.sum(self.Rd@((u_k[:,i+1] - u_k[:,i])**2))
         return cost
 
-    def optimize(self, my_car, x_des, y_des, v_des, psi_des):
+    def optimize(self, my_car, points):
+        self.horiz = points.shape[0]
         bnd = [(-5, 5),(np.deg2rad(-60), np.deg2rad(60))]*self.horiz
-        result = minimize(self.mpc_cost, args=(my_car, x_des, y_des, v_des, psi_des), x0 = np.zeros((2*self.horiz)), method='SLSQP', bounds = bnd)
+        result = minimize(self.mpc_cost, args=(my_car, points), x0 = np.zeros((2*self.horiz)), method='SLSQP', bounds = bnd)
         return np.clip(result.x[0], -5,5),  np.clip(result.x[1], np.deg2rad(-45),np.deg2rad(45))
 
 
