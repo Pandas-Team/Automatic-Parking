@@ -47,7 +47,8 @@ if __name__ == '__main__':
     ########################### initialization ##############################################
     env = Environment(obs)
     my_car = Car_Dynamics(start[0], start[1], 0, 0, 0, 0, length=4, dt=0.17, Gama=0)
-    controller = MPC_Controller(horiz=5)
+    MPC_HORIZON = 10
+    controller = MPC_Controller()
 
     res = env.render(my_car.x, my_car.y, my_car.psi, 0)
     cv2.imshow('environment', res)
@@ -81,12 +82,8 @@ if __name__ == '__main__':
 
     print('driving to destination ...')
     for i,point in enumerate(interpolated_path):
-            try:
-                computed_angle = angle_of_line(interpolated_path[i][0],interpolated_path[i][1],interpolated_path[i+10][0],interpolated_path[i+10][1])
-            except:
-                pass
             
-            acc, delta = controller.optimize(my_car, point[0], point[1], interpolated_path[i:i+5])
+            acc, delta = controller.optimize(my_car, interpolated_path[i:i+MPC_HORIZON])
             my_car.update_state(my_car.move(acc,  delta))
             res = env.render(my_car.x, my_car.y, my_car.psi, delta)
             logger.log(point, my_car, acc, delta)
@@ -99,12 +96,8 @@ if __name__ == '__main__':
     sleep(2)
 
     for i,point in enumerate(interpolated_park_path):
-            try:
-                computed_angle = -angle_of_line(interpolated_park_path[i][0],interpolated_park_path[i][1],interpolated_park_path[i+10][0],interpolated_park_path[i+10][1])
-            except:
-                pass
             
-            acc, delta = controller.optimize(my_car, point[0], point[1], computed_angle)
+            acc, delta = controller.optimize(my_car, interpolated_park_path[i:i+MPC_HORIZON])
             my_car.update_state(my_car.move(acc,  delta))
             res = env.render(my_car.x, my_car.y, my_car.psi, delta)
             logger.log(point, my_car, acc, delta)
@@ -115,12 +108,8 @@ if __name__ == '__main__':
 
 
     for i,point in enumerate(ensure_path2):
-            try:
-                computed_angle = angle_of_line(ensure_path2[i][0],ensure_path2[i][1],ensure_path2[i+10][0],ensure_path2[i+10][1])
-            except:
-                pass
             
-            acc, delta = controller.optimize(my_car, point[0], point[1], computed_angle)
+            acc, delta = controller.optimize(my_car, ensure_path2[i:i+MPC_HORIZON])
             my_car.update_state(my_car.move(acc,  delta))
             res = env.render(my_car.x, my_car.y, my_car.psi, delta)
             logger.log(point, my_car, acc, delta)

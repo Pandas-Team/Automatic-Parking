@@ -180,29 +180,21 @@ class Car_Dynamics:
 
     
 class MPC_Controller:
-    def __init__(self, horiz):
-        self.horiz = horiz
+    def __init__(self):
+        self.horiz = None
         self.R = np.diag([0.01, 0.01])                 # input cost matrix
         self.Rd = np.diag([0.01, 1.0])                 # input difference cost matrix
-        # self.Q = np.diag([1.0, 1.0, 0.5, 0.5])         # state cost matrix
         self.Q = np.diag([1.0, 1.0])         # state cost matrix
+        self.Qf = self.Q       
 
-        self.Qf = self.Q                               # state final matrix
-
-    def constraint0(self, u_k):
-        u_k = u_k.reshape(self.horiz,2).T
-        # max_in = np.array([np.array([5]*5),np.repeat(np.deg2rad(30),5)])
-        max_in = np.array([[10],[np.deg2rad(60)]])
-        return np.sum((max_in**2-u_k[:,:1]**2))
-
-    def mpc_cost(self, u_k, my_car, x_des, y_des, ref):
+    def mpc_cost(self, u_k, my_car, points):
         test_car = Car_Dynamics(np.array(my_car.x).copy(), np.array(my_car.y).copy(), np.array(my_car.psi).copy(), np.array(my_car.u).copy(), np.array(my_car.v).copy(), np.array(my_car.r).copy(), length=4, dt=np.array(my_car.dt), Gama=0)
 
         dt = test_car.dt
         u_k = u_k.reshape(self.horiz,2).T
         z_k = np.zeros((6,self.horiz+1))
         cost = 0.0
-        ref = ref.T
+        desired_state = points.T
         for i in range(self.horiz):
             state_dot = test_car.move(u_k[0,i],u_k[1,i])
             z_k[:,i] = (test_car.state + dt*state_dot).reshape(6)
@@ -218,14 +210,15 @@ class MPC_Controller:
             # psi = state[2,0]
             # z_k[:,i] = [x,y,psi]
             cost += np.sum(self.R@(u_k[:,i]**2))
-            cost += np.sum(self.Q@((ref[:,i]-z_k[:2,i])**2))
+            cost += np.sum(self.Q@((desired_state[:,i]-z_k[:2,i])**2))
             if i < (self.horiz-1):     
                 cost += np.sum(self.Rd@((u_k[:,i+1] - u_k[:,i])**2))
         return cost
 
-    def optimize(self, my_car, x_des, y_des, ref):
+    def optimize(self, my_car, points):
+        self.horiz = points.shape[0]
         bnd = [(0.1, 1),(np.deg2rad(-60), np.deg2rad(60))]*self.horiz
-        result = minimize(self.mpc_cost, args=(my_car, x_des, y_des, ref), x0 = np.zeros((2*self.horiz)), method='SLSQP', bounds = bnd)
+        result = minimize(self.mpc_cost, args=(my_car, points), x0 = np.zeros((2*self.horiz)), method='SLSQP', bounds = bnd)
         return result.x[0],  result.x[1]
 
 
