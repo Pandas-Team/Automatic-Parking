@@ -19,18 +19,16 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     logger = DataLogger()
-    ########################## default variables ################################################
 
+    ########################## default variables ################################################
     start = np.array([args.x_start, args.y_start])
     end   = np.array([args.x_end, args.y_end])
-
     #############################################################################################
 
     # environment margin  : 5
     # pathplanning margin : 5
 
     ########################## defining obstacles ###############################################
-
     parking1 = Parking1(args.parking)
     end, obs = parking1.generate_obstacles()
 
@@ -48,10 +46,9 @@ if __name__ == '__main__':
 
     # new_obs = np.array([[78,78],[79,79],[78,79]])
     # obs = np.vstack([obs,new_obs])
+    #############################################################################################
 
-    #########################################################################################
-
-    ########################### initialization ##############################################
+    ########################### initialization ##################################################
     env = Environment(obs)
     my_car = Car_Dynamics(start[0], start[1], 0, np.deg2rad(args.phi_start), length=4, dt=0.2)
     MPC_HORIZON = 10
@@ -85,7 +82,6 @@ if __name__ == '__main__':
     #############################################################################################
 
     ################################## control ##################################################
-
     print('driving to destination ...')
     for i,point in enumerate(interpolated_path):
             
@@ -98,7 +94,6 @@ if __name__ == '__main__':
             if key == ord('s'):
                 cv2.imwrite('res.png', res*255)
 
-
     for i,point in enumerate(interpolated_park_path):
             
             acc, delta = controller.optimize(my_car, interpolated_park_path[i:i+MPC_HORIZON])
@@ -109,7 +104,6 @@ if __name__ == '__main__':
             key = cv2.waitKey(1)
             if key == ord('s'):
                 cv2.imwrite('res.png', res*255)
-
 
     for i,point in enumerate(ensure_path2):
             
