@@ -1,7 +1,6 @@
 import numpy as np
 import math
 from scipy.optimize import minimize
-import copy
 
 class Car_Dynamics:
     def __init__(self, x_0, y_0, psi_0, u_0, v_0, r_0, length, dt, Gama):
@@ -189,20 +188,29 @@ class MPC_Controller:
         self.Qf = self.Q       
 
     def mpc_cost(self, u_k, my_car, points):
-        mpc_car = copy.copy(my_car)
-        u_k = u_k.reshape(self.horiz, 2).T
-        z_k = np.zeros((2, self.horiz+1))
-    
-        desired_state = points.T
-        cost = 0.0
+        test_car = Car_Dynamics(np.array(my_car.x).copy(), np.array(my_car.y).copy(), np.array(my_car.psi).copy(), np.array(my_car.u).copy(), np.array(my_car.v).copy(), np.array(my_car.r).copy(), length=4, dt=np.array(my_car.dt), Gama=0)
 
+        dt = test_car.dt
+        u_k = u_k.reshape(self.horiz,2).T
+        z_k = np.zeros((6,self.horiz+1))
+        cost = 0.0
+        desired_state = points.T
         for i in range(self.horiz):
-            state_dot = mpc_car.move(u_k[0,i], u_k[1,i])
-            mpc_car.update_state(state_dot)
-        
-            z_k[:,i] = [mpc_car.x, mpc_car.y]
+            state_dot = test_car.move(u_k[0,i],u_k[1,i])
+            z_k[:,i] = (test_car.state + dt*state_dot).reshape(6)
+            # self.x = self.state[0,0]
+            # self.y = self.state[1,0]
+            # self.psi = self.state[2,0]
+            # self.u = self.state[3,0]
+            # self.v = self.state[4,0]
+            # self.r = self.state[5,0]
+
+            # x = state[0,0]
+            # y = state[1,0]
+            # psi = state[2,0]
+            # z_k[:,i] = [x,y,psi]
             cost += np.sum(self.R@(u_k[:,i]**2))
-            cost += np.sum(self.Q@((desired_state[:,i]-z_k[:,i])**2))
+            cost += np.sum(self.Q@((desired_state[:,i]-z_k[:2,i])**2))
             if i < (self.horiz-1):     
                 cost += np.sum(self.Rd@((u_k[:,i+1] - u_k[:,i])**2))
         return cost
