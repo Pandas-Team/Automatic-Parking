@@ -32,7 +32,7 @@ The result is a set of points to guide our agent!
 **Kinematic model** of the car, is:
 ```math
 x = vcos(ϕ)
-y = vsin((ϕ)
+y = vsin(ϕ)
 v = a
 ϕ = vtan(δ)L
 ```
