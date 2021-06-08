@@ -9,6 +9,10 @@ you can choose the parking spot from 1 to 24:
 
 ![parking1](extra/parking1.png)
 
+# Abstract
+In This Project, We Designed and Programmed an Automated Parking System With Its Implementation Environment. With the Help of This System, the Car Is Routed and Moved to the Designated Parking Place and the Park in It Is Completely Automatic. Algorithms Such As Path Planning, Path Tracking, A* Search Algorithm and High Coding Skills in Python Have Been Used
+in This Project.
+
 ## Envroinment
 Our first step to develop an auto park system was to design and develop an environment capable of giving visual render using ```OpenCV``` library.
 Environment is implemented in ```environment.py``` as a class and recieves obstacles at the beginning ```env = Environment(obs)```.
