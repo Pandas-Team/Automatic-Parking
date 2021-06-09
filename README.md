@@ -34,7 +34,7 @@ The result is a set of points to guide our agent!
 x = vcos(ϕ)
 y = vsin(ϕ)
 v = a
-ϕ = vtan(δ)L
+ϕ = vtan(δ)/L
 ```
 **State vector** is:
 ```math
