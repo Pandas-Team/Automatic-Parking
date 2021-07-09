@@ -35,29 +35,29 @@ class DataLogger:
 
         # plot x
         plt.figure(figsize=(12,8))
-        plt.scatter(t, self.car_state[:,0], color='r', s=8)
-        plt.scatter(t, self.path[:,0], color='b', s=8)
+        plt.plot(t, self.path[:,0], color='b', linewidth=5)
+        plt.plot(t, self.car_state[:,0], color='r', linewidth=4)
         plt.title('car\'s x in time',fontsize=20)
         plt.xlabel('time (s)',fontsize=20)
         plt.ylabel('x (m)',fontsize=20)
         plt.grid()
-        plt.legend(['car\'s x', 'reference'], prop=font) # using a named size
+        plt.legend(['reference', 'car\'s x'], prop=font) # using a named size
         plt.savefig('log results/x.png')
 
         # plot y
         plt.figure(figsize=(12,8))
-        plt.scatter(t, self.car_state[:,1], color='r', s=8)
-        plt.scatter(t, self.path[:,1], color='b', s=8)
+        plt.plot(t, self.path[:,1], color='b', linewidth=5)
+        plt.plot(t, self.car_state[:,1], color='r', linewidth=4)
         plt.title('car\'s y in time',fontsize=20)
         plt.xlabel('time (s)',fontsize=20)
         plt.ylabel('y (m)',fontsize=20)
         plt.grid()
-        plt.legend(['car\'s y', 'reference'], prop=font) # using a named size
+        plt.legend(['reference', 'car\'s y'], prop=font) # using a named size
         plt.savefig('log results/y.png')
 
         # plot v
         plt.figure(figsize=(12,8))
-        plt.scatter(t, self.car_state[:,2], color='r', s=8)
+        plt.plot(t, self.car_state[:,2], color='r', linewidth=4)
         plt.title('car\'s speed in time',fontsize=20)
         plt.xlabel('time (s)',fontsize=20)
         plt.ylabel('v (m/s)',fontsize=20)
@@ -67,7 +67,7 @@ class DataLogger:
 
         # plot psi
         plt.figure(figsize=(12,8))
-        plt.scatter(t, np.rad2deg(self.car_state[:,3]), color='r', s=8)
+        plt.plot(t, np.rad2deg(self.car_state[:,3]), color='r', linewidth=4)
         plt.title('car\'s angle in time',fontsize=20)
         plt.xlabel('time (s)',fontsize=20)
         plt.ylabel('psi (degree)',fontsize=20)
@@ -77,8 +77,8 @@ class DataLogger:
 
         # plot position
         plt.figure(figsize=(12,12))
-        plt.scatter(self.path[:,0], self.path[:,1], color='b', s=5)
-        plt.scatter(self.car_state[:,0], self.car_state[:,1], color='r', s=5)
+        plt.plot(self.path[:,0], self.path[:,1], color='b', linewidth=5)
+        plt.plot(self.car_state[:,0], self.car_state[:,1], color='r', linewidth=4)
         plt.title('car\'s position in time',fontsize=20)
         plt.xlabel('x (m)',fontsize=20)
         plt.ylabel('y (m)',fontsize=20)
@@ -88,7 +88,7 @@ class DataLogger:
 
         # plot accelerate
         plt.figure(figsize=(12,8))
-        plt.scatter(t, self.u[:,0], color='r', s=8)
+        plt.plot(t, self.u[:,0], color='r', linewidth=4)
         plt.title('car\'s accelerate in time',fontsize=20)
         plt.xlabel('time (s)',fontsize=20)
         plt.ylabel('accelerate (m^2/s)',fontsize=20)
@@ -98,7 +98,7 @@ class DataLogger:
 
         # plot delta
         plt.figure(figsize=(12,8))
-        plt.scatter(t, np.rad2deg(self.u[:,1]), color='r', s=8)
+        plt.plot(t, np.rad2deg(self.u[:,1]), color='r', linewidth=4)
         plt.title('car\'s steer in time',fontsize=20)
         plt.xlabel('time (s)',fontsize=20)
         plt.ylabel('steer (degree)',fontsize=20)
