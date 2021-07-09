@@ -35,7 +35,7 @@ class MPC_Controller:
         self.horiz = None
         self.R = np.diag([0.01, 0.01])                 # input cost matrix
         self.Rd = np.diag([0.01, 1.0])                 # input difference cost matrix
-        self.Q = np.diag([1.0, 1.0])         # state cost matrix
+        self.Q = np.diag([1.0, 1.0])                   # state cost matrix
         self.Qf = self.Q                               # state final matrix
 
     def mpc_cost(self, u_k, my_car, points):
@@ -67,30 +67,61 @@ class MPC_Controller:
 
 ######################################################################################################################################################################
 
-    # def make_model(self, v, phi, delta):        
-    #     # matrices
-    #     # 4*4
-    #     A = np.array([[1, 0, self.dt*np.cos(phi)         , -self.dt*v*np.sin(phi)],
-    #                   [0, 1, self.dt*np.sin(phi)         , self.dt*v*np.cos(phi) ],
-    #                   [0, 0, 1                           , 0                     ],
-    #                   [0, 0, self.dt*np.tan(delta)/self.L, 1                     ]])
-    #     # 4*2 
-    #     B = np.array([[0      , 0                                  ],
-    #                   [0      , 0                                  ],
-    #                   [self.dt, 0                                  ],
-    #                   [0      , self.dt*v/(self.L*np.cos(delta)**2)]])
+class Linear_MPC_Controller:
+    def __init__(self):
+        self.horiz = None
+        self.R = np.diag([0.01, 0.01])                 # input cost matrix
+        self.Rd = np.diag([0.01, 1.0])                 # input difference cost matrix
+        self.Q = np.diag([1.0, 1.0])                   # state cost matrix
+        self.Qf = self.Q                               # state final matrix
+        self.dt=0.2   
+        self.L=4                          
 
-    #     # 4*1
-    #     C = np.array([[self.dt*v* np.sin(phi)*phi                ],
-    #                   [-self.dt*v*np.cos(phi)*phi                ],
-    #                   [0                                         ],
-    #                   [-self.dt*v*delta/(self.L*np.cos(delta)**2)]])
+    def make_model(self, v, psi, delta):        
+        # matrices
+        # 4*4
+        A = np.array([[1, 0, self.dt*np.cos(psi)         , -self.dt*v*np.sin(psi)],
+                    [0, 1, self.dt*np.sin(psi)         , self.dt*v*np.cos(psi) ],
+                    [0, 0, 1                           , 0                     ],
+                    [0, 0, self.dt*np.tan(delta)/self.L, 1                     ]])
+        # 4*2 
+        B = np.array([[0      , 0                                  ],
+                    [0      , 0                                  ],
+                    [self.dt, 0                                  ],
+                    [0      , self.dt*v/(self.L*np.cos(delta)**2)]])
+
+        # 4*1
+        C = np.array([[self.dt*v* np.sin(psi)*psi                ],
+                    [-self.dt*v*np.cos(psi)*psi                ],
+                    [0                                         ],
+                    [-self.dt*v*delta/(self.L*np.cos(delta)**2)]])
         
-    #     return A, B, C
+        return A, B, C
 
-    # def move(self, accelerate, steer):
-    #     delta = np.deg2rad(steer)
-    #     u_k = np.array([[accelerate, delta]]).T
-    #     A,B,C = self.make_model(self.v, self.phi, delta)
-    #     z_k1 = A@self.z_k + B@u_k + C
-    #     return u_k, z_k1
+    def mpc_cost(self, u_k, my_car, points):
+        
+        u_k = u_k.reshape(self.horiz, 2).T
+        z_k = np.zeros((2, self.horiz+1))
+        desired_state = points.T
+        cost = 0.0
+        old_state = np.array([my_car.x, my_car.y, my_car.v, my_car.psi]).reshape(4,1)
+
+        for i in range(self.horiz):
+            delta = u_k[1,i]
+            A,B,C = self.make_model(my_car.v, my_car.psi, delta)
+            new_state = A@old_state + B@u_k + C
+        
+            z_k[:,i] = [new_state[0,0], new_state[1,0]]
+            cost += np.sum(self.R@(u_k[:,i]**2))
+            cost += np.sum(self.Q@((desired_state[:,i]-z_k[:,i])**2))
+            if i < (self.horiz-1):     
+                cost += np.sum(self.Rd@((u_k[:,i+1] - u_k[:,i])**2))
+            
+            old_state = new_state
+        return cost
+
+    def optimize(self, my_car, points):
+        self.horiz = points.shape[0]
+        bnd = [(-5, 5),(np.deg2rad(-60), np.deg2rad(60))]*self.horiz
+        result = minimize(self.mpc_cost, args=(my_car, points), x0 = np.zeros((2*self.horiz)), method='SLSQP', bounds = bnd)
+        return result.x[0],  result.x[1]

@@ -5,7 +5,7 @@ import argparse
 
 from environment import Environment, Parking1
 from pathplanning import PathPlanning, ParkPathPlanning
-from control import Car_Dynamics, MPC_Controller
+from control import Car_Dynamics, MPC_Controller, Linear_MPC_Controller
 from utils import angle_of_line, make_square, DataLogger
 
 if __name__ == '__main__':
@@ -53,8 +53,7 @@ if __name__ == '__main__':
     my_car = Car_Dynamics(start[0], start[1], 0, np.deg2rad(args.phi_start), length=4, dt=0.2)
     MPC_HORIZON = 10
     controller = MPC_Controller()
-
-    # env.background = cv2.rectangle(env.background, tuple([1000,1000]-(end*10-[40,20]-[50,70])[::-1]), tuple([1000,1000]-(end*10+[40,20]-[50,70])[::-1]), color=[0,1,0], thickness=2)
+    # controller = Linear_MPC_Controller()
 
     res = env.render(my_car.x, my_car.y, my_car.psi, 0)
     cv2.imshow('environment', res)
