@@ -1,4 +1,4 @@
-# Automatic Parallel Parking : Path Planning, Path Tracking & Control
+# Automatic Parallel Parking: Path Planning, Path Tracking & Control
 
 This repository contains a python implementation of an automatic parallel parking system in a virtual environment that includes path planning, path tracking, and parallel parking.
  The agent navigates its route through the environment and is directed to the assigned park location by the MPC controller. You can find the Medium article [here](https://medium.com/@amirhosseinh77/automatic-parallel-parking-system-including-path-planning-path-tracking-and-parallel-parking-in-a-ece780b2e8e0).
