@@ -8,7 +8,7 @@ The environment is implemented in ```environment.py``` as a class and receives o
 The agent can be placed using ```env.render(x,y,angle)```.
 A sample of the environment is displayed below. You can choose the parking spot from 1 to 24.
 
-![[developed environment](https://user-images.githubusercontent.com/56114938/127310550-745d7123-f02f-48ae-96a7-9f82089b9fd9.JPG)
+![developed environment](https://user-images.githubusercontent.com/56114938/127310550-745d7123-f02f-48ae-96a7-9f82089b9fd9.JPG)
 
 ## Path Planning
 #### A* Algorithm
@@ -56,8 +56,6 @@ Run the code using this command:
 ```
 $ python main_autopark.py --x_start 0 --y_start 90 --phi_start 0 --parking 7
 ```
-
-![parking1](extra/parking1.png)
 
 ## About Us
 We as Team Pandas won 1st place in the National Rahneshan competition 2020-2021 for autonomous vehicles. This contest has been one of the most competitive and challenging contests in the Rahneshan tournaments with more than 15 teams competing from top universities in Iran.
