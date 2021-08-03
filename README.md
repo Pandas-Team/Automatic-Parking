@@ -29,6 +29,7 @@ v' = a
 ϕ' = v . tan(δ)/L
 ```
 ```a: acceleration, δ: steering angle, ψ: yaw angle, L: wheelbase, x: x-position, y: y-position, v: velocity```
+
 **The state vector** is:
 ```math
 z=[x,y,v,ψ]
