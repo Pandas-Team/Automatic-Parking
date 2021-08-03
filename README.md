@@ -26,7 +26,7 @@ The result is a set of points to guide our agent!
 x' = v . cos(ψ)
 y' = v . sin(ψ)
 v' = a
-ϕ' = v . tan(δ)/L
+ψ' = v . tan(δ)/L
 ```
 ```a: acceleration, δ: steering angle, ψ: yaw angle, L: wheelbase, x: x-position, y: y-position, v: velocity```
 
