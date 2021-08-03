@@ -23,22 +23,23 @@ The result is a set of points to guide our agent!
 ## Path Tracking
 **The kinematic model** of the car is:
 ```math
-x = vcos(ϕ)
-y = vsin(ϕ)
-v = a
-ϕ = vtan(δ)/L
+x' = v . cos(ψ)
+y' = v . sin(ψ)
+v' = a
+ϕ' = v . tan(δ)/L
 ```
+```a: acceleration, δ: steering angle, ψ: yaw angle, L: wheelbase, x: x-position, y: y-position, v: velocity```
 **The state vector** is:
 ```math
-z=[x,y,v,ϕ]
+z=[x,y,v,ψ]
 ```
-x: x-position, y: y-position, v: velocity, φ: yaw angle
+```x: x-position, y: y-position, v: velocity, ψ: yaw angle```
 
 **The input vector** is:
 ```math
 u=[a,δ]
 ```
-a: accellation, δ: steering angle
+```a: acceleration, δ: steering angle```
 
 #### Control
 The MPC controller controls vehicle speed and steering based on the model and the car is directed through the path. There is an option for using the linearized model for MPC. In this case MPC linearizes the kinematic model around the operating point and then does the optimization.
