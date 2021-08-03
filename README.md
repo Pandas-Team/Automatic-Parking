@@ -52,7 +52,6 @@ Based on the arriving angle, the agent chooses a coordinate as ensure1.
 After that, the parking path is planned from ensure1 to ensure2 using 2 circle equations as mentioned below. 
 MPC controls the agent and car parks in ensure2 coordinate.
 
-![double planning](extra/double_parking.png)
 ![automatic_parking_process](https://user-images.githubusercontent.com/56114938/128083454-60f8ba82-00a8-43a2-b8ad-8d4ad09cc762.gif)
 
 ## Inference
