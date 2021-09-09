@@ -51,7 +51,7 @@ if __name__ == '__main__':
     ########################### initialization ##################################################
     env = Environment(obs)
     my_car = Car_Dynamics(start[0], start[1], 0, np.deg2rad(args.psi_start), length=4, dt=0.2)
-    MPC_HORIZON = 10
+    MPC_HORIZON = 5
     controller = MPC_Controller()
     # controller = Linear_MPC_Controller()
 
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     path = np.vstack([path, ensure_path1])
 
     print('interpolating ...')
-    interpolated_path = path_planner.interpolate_path(path)
+    interpolated_path = path_planner.interpolate_path(path, sample_rate=5)
     interpolated_park_path = park_path_planner.interpolate_park_path(park_path)
     interpolated_park_path = np.vstack([ensure_path1[::-1], interpolated_park_path, ensure_path2[::-1]])
 

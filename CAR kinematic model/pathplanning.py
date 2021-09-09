@@ -234,11 +234,12 @@ class PathPlanning:
         travel = np.linspace(0.0, len(x) - 1, n_path_points)
         return spl_i_x(travel), spl_i_y(travel)
 
-    def interpolate_path(self, path):
-        choices = np.arange(0,len(path),int(len(path)/32))
+    def interpolate_path(self, path, sample_rate):
+        choices = np.arange(0,len(path),sample_rate)
+        if len(path)%sample_rate: choices =  np.append(choices , len(path)-1)
         way_point_x = path[choices,0]
         way_point_y = path[choices,1]
-        n_course_point = int(len(choices)*18)
+        n_course_point = len(path)*3
         rix, riy = self.interpolate_b_spline_path(way_point_x, way_point_y, n_course_point)
         new_path = np.vstack([rix,riy]).T
         # new_path[new_path<0] = 0
