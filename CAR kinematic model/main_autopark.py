@@ -4,7 +4,7 @@ from time import sleep
 import argparse
 
 from environment import Environment, Parking1
-from pathplanning import PathPlanning, ParkPathPlanning
+from pathplanning import PathPlanning, ParkPathPlanning, interpolate_path
 from control import Car_Dynamics, MPC_Controller, Linear_MPC_Controller
 from utils import angle_of_line, make_square, DataLogger
 
@@ -72,8 +72,8 @@ if __name__ == '__main__':
     path = np.vstack([path, ensure_path1])
 
     print('interpolating ...')
-    interpolated_path = path_planner.interpolate_path(path, sample_rate=5)
-    interpolated_park_path = park_path_planner.interpolate_park_path(park_path)
+    interpolated_path = interpolate_path(path, sample_rate=5)
+    interpolated_park_path = interpolate_path(park_path, sample_rate=2)
     interpolated_park_path = np.vstack([ensure_path1[::-1], interpolated_park_path, ensure_path2[::-1]])
 
     env.draw_path(interpolated_path)

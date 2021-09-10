@@ -4,6 +4,29 @@ import scipy.interpolate as scipy_interpolate
 from utils import angle_of_line
 
 
+############################################## Functions ######################################################
+
+def interpolate_b_spline_path(x, y, n_path_points, degree=3):
+    ipl_t = np.linspace(0.0, len(x) - 1, len(x))
+    spl_i_x = scipy_interpolate.make_interp_spline(ipl_t, x, k=degree)
+    spl_i_y = scipy_interpolate.make_interp_spline(ipl_t, y, k=degree)
+    travel = np.linspace(0.0, len(x) - 1, n_path_points)
+    return spl_i_x(travel), spl_i_y(travel)
+
+def interpolate_path(path, sample_rate):
+    choices = np.arange(0,len(path),sample_rate)
+    if len(path)-1 not in choices:
+            choices =  np.append(choices , len(path)-1)
+    way_point_x = path[choices,0]
+    way_point_y = path[choices,1]
+    n_course_point = len(path)*3
+    rix, riy = interpolate_b_spline_path(way_point_x, way_point_y, n_course_point)
+    new_path = np.vstack([rix,riy]).T
+    # new_path[new_path<0] = 0
+    return new_path
+
+################################################ Path Planner ################################################
+
 class AStarPlanner:
 
     def __init__(self, ox, oy, resolution, rr):
@@ -227,27 +250,7 @@ class PathPlanning:
         path = np.vstack([rx,ry]).T
         return path[::-1]
 
-    def interpolate_b_spline_path(self, x, y, n_path_points, degree=3):
-        ipl_t = np.linspace(0.0, len(x) - 1, len(x))
-        spl_i_x = scipy_interpolate.make_interp_spline(ipl_t, x, k=degree)
-        spl_i_y = scipy_interpolate.make_interp_spline(ipl_t, y, k=degree)
-        travel = np.linspace(0.0, len(x) - 1, n_path_points)
-        return spl_i_x(travel), spl_i_y(travel)
-
-    def interpolate_path(self, path, sample_rate):
-        choices = np.arange(0,len(path),sample_rate)
-        if len(path)%sample_rate: choices =  np.append(choices , len(path)-1)
-        way_point_x = path[choices,0]
-        way_point_y = path[choices,1]
-        n_course_point = len(path)*3
-        rix, riy = self.interpolate_b_spline_path(way_point_x, way_point_y, n_course_point)
-        new_path = np.vstack([rix,riy]).T
-        # new_path[new_path<0] = 0
-        return new_path
-
-
-
-
+############################################### Park Path Planner #################################################
 
 class ParkPathPlanning:
     def __init__(self,obstacles):
@@ -318,25 +321,6 @@ class ParkPathPlanning:
             park_path = self.plan_park_up_right(x_ensure2, y_ensure2)
 
         return np.array([x_ensure1, y_ensure1]), park_path, ensure_path1, ensure_path2
-
-    def interpolate_b_spline_path(self, x, y, n_path_points, degree=3):
-        ipl_t = np.linspace(0.0, len(x) - 1, len(x))
-        spl_i_x = scipy_interpolate.make_interp_spline(ipl_t, x, k=degree)
-        spl_i_y = scipy_interpolate.make_interp_spline(ipl_t, y, k=degree)
-        travel = np.linspace(0.0, len(x) - 1, n_path_points)
-        return spl_i_x(travel), spl_i_y(travel)
-
-    def interpolate_park_path(self, path):
-        choices = np.arange(0,len(path),2)
-        if len(path)-1 not in choices:
-            choices = np.append(choices,len(path)-1)
-        way_point_x = path[choices,0]
-        way_point_y = path[choices,1]
-        n_course_point = 50
-        rix, riy = self.interpolate_b_spline_path(way_point_x, way_point_y, n_course_point)
-        new_path = (np.vstack([rix,riy]).T)
-        # new_path[new_path<0] = 0
-        return new_path
 
 
     def plan_park_up_right(self, x1, y1):       
