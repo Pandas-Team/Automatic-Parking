@@ -78,35 +78,16 @@ if __name__ == '__main__':
 
     env.draw_path(interpolated_path)
     env.draw_path(interpolated_park_path)
+
+    final_path = np.vstack([interpolated_path, interpolated_park_path, ensure_path2])
+
     #############################################################################################
 
     ################################## control ##################################################
     print('driving to destination ...')
-    for i,point in enumerate(interpolated_path):
-            
-            acc, delta = controller.optimize(my_car, interpolated_path[i:i+MPC_HORIZON])
-            my_car.update_state(my_car.move(acc,  delta))
-            res = env.render(my_car.x, my_car.y, my_car.psi, delta)
-            logger.log(point, my_car, acc, delta)
-            cv2.imshow('environment', res)
-            key = cv2.waitKey(1)
-            if key == ord('s'):
-                cv2.imwrite('res.png', res*255)
-
-    for i,point in enumerate(interpolated_park_path):
-            
-            acc, delta = controller.optimize(my_car, interpolated_park_path[i:i+MPC_HORIZON])
-            my_car.update_state(my_car.move(acc,  delta))
-            res = env.render(my_car.x, my_car.y, my_car.psi, delta)
-            logger.log(point, my_car, acc, delta)
-            cv2.imshow('environment', res)
-            key = cv2.waitKey(1)
-            if key == ord('s'):
-                cv2.imwrite('res.png', res*255)
-
-    for i,point in enumerate(ensure_path2):
-            
-            acc, delta = controller.optimize(my_car, ensure_path2[i:i+MPC_HORIZON])
+    for i,point in enumerate(final_path):
+        
+            acc, delta = controller.optimize(my_car, final_path[i:i+MPC_HORIZON])
             my_car.update_state(my_car.move(acc,  delta))
             res = env.render(my_car.x, my_car.y, my_car.psi, delta)
             logger.log(point, my_car, acc, delta)
