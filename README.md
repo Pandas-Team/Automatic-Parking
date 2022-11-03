@@ -23,11 +23,11 @@ The result is a set of points to guide our agent!
 ## Path Tracking
 **The kinematic model** of the car is:
 ```math
-x' = v . cos(ψ)
+x' = v . cos(ψ), 
 
-y' = v . sin(ψ)
+y' = v . sin(ψ), 
 
-v' = a
+v' = a, 
 
 ψ' = v . tan(δ)/L
 ```
