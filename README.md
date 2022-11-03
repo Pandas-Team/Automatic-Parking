@@ -24,8 +24,11 @@ The result is a set of points to guide our agent!
 **The kinematic model** of the car is:
 ```math
 x' = v . cos(ψ)
+
 y' = v . sin(ψ)
+
 v' = a
+
 ψ' = v . tan(δ)/L
 ```
 ```a: acceleration, δ: steering angle, ψ: yaw angle, L: wheelbase, x: x-position, y: y-position, v: velocity```
