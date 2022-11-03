@@ -28,7 +28,7 @@ The result is a set of points to guide our agent!
 \dot{y} = v . sin(ψ)\\
 \dot{v} = a\\
 \dot{ψ} = v . tan(δ)/L
-\end{matrix}
+\end{matrix}\right.
 ```
 ```a: acceleration, δ: steering angle, ψ: yaw angle, L: wheelbase, x: x-position, y: y-position, v: velocity```
 
