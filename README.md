@@ -61,7 +61,7 @@ Run the code using this command:
 ```
 $ python main_autopark.py --x_start 0 --y_start 90 --psi_start 0 --parking 7
 ```
-Cite using 
+## Citation
 [![DOI](https://zenodo.org/badge/328711550.svg)](https://zenodo.org/badge/latestdoi/328711550)
 
 ## About Us
