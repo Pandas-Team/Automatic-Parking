@@ -61,7 +61,8 @@ Run the code using this command:
 ```
 $ python main_autopark.py --x_start 0 --y_start 90 --psi_start 0 --parking 7
 ```
-Cite using [![DOI](https://zenodo.org/badge/328711550.svg)](https://zenodo.org/badge/latestdoi/328711550)
+Cite using 
+[![DOI](https://zenodo.org/badge/328711550.svg)](https://zenodo.org/badge/latestdoi/328711550)
 
 ## About Us
 We as Team Pandas won 1st place in the National Rahneshan competition 2020-2021 for autonomous vehicles. This contest has been one of the most competitive and challenging contests in the Rahneshan tournaments with more than 15 teams competing from top universities in Iran.
